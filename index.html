@@ -3,579 +3,652 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>네이버지도 x 카카오톡 안심드라이브</title>
+    <title>안심드라이브 — 가족 안심 운전 모니터링 (Team-J)</title>
+    <meta
+      name="description"
+      content="자녀가 결제하고 부모는 아무것도 안 해도 되는, AI 기반 가족 안심 운전 모니터링 서비스 데모."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,700;6..72,800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,200;6..72,300;6..72,400;6..72,600;6..72,700;6..72,800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body class="child-mode child-free-mode">
-    <div class="phone-shell" aria-label="iPhone 15 Pro browser prototype">
-      <div class="browser-bar">
-        <span class="browser-lock" aria-hidden="true"></span>
-        <button class="mode-toggle" id="modeToggle" type="button">
-          <span id="modeToggleLabel">자녀</span>
-        </button>
-        <button class="plan-toggle child-only" id="planToggle" type="button">
-          <span id="planToggleLabel">무료</span>
-        </button>
-        <span>ansim-drive.kr</span>
-      </div>
+  <body>
+    <!-- ===== Aurora 배경 ===== -->
+    <div class="aurora" aria-hidden="true">
+      <div class="aurora-orb mint"></div>
+      <div class="aurora-orb coral"></div>
+      <div class="aurora-orb purple"></div>
+      <div class="aurora-orb amber"></div>
+    </div>
 
-      <main class="app" id="app">
-        <div class="zoom-controls parent-only" aria-label="부모 버전 글자 크기">
-          <span>크게 보기</span>
-          <button class="zoom-button active" data-zoom="2">2배</button>
-          <button class="zoom-button" data-zoom="3">3배</button>
-          <button class="zoom-button" data-zoom="4">4배</button>
+    <!-- ===== Lucide-style SVG icon sprite ===== -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <symbol id="i-alert" viewBox="0 0 24 24">
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </symbol>
+        <symbol id="i-check-circle" viewBox="0 0 24 24">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </symbol>
+        <symbol id="i-message" viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </symbol>
+        <symbol id="i-sparkles" viewBox="0 0 24 24">
+          <path d="m12 3-1.9 5.8L4 11l5.8 1.9L12 19l1.9-5.8L20 11l-5.8-1.9L12 3z"/>
+          <path d="M5 3v4M3 5h4M19 17v4M17 19h4"/>
+        </symbol>
+        <symbol id="i-trending-up" viewBox="0 0 24 24">
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+          <polyline points="16 7 22 7 22 13"/>
+        </symbol>
+        <symbol id="i-trending-down" viewBox="0 0 24 24">
+          <polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/>
+          <polyline points="16 17 22 17 22 11"/>
+        </symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </symbol>
+        <symbol id="i-car" viewBox="0 0 24 24">
+          <path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"/>
+          <circle cx="6.5" cy="16.5" r="2.5"/>
+          <circle cx="16.5" cy="16.5" r="2.5"/>
+        </symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </symbol>
+        <symbol id="i-handshake" viewBox="0 0 24 24">
+          <path d="m11 17 2 2a1 1 0 1 0 3-3"/>
+          <path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/>
+          <path d="m21 3 1 11h-2"/>
+          <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/>
+          <path d="M3 4h8"/>
+        </symbol>
+        <symbol id="i-bell" viewBox="0 0 24 24">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </symbol>
+        <symbol id="i-play" viewBox="0 0 24 24">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </symbol>
+        <symbol id="i-pause" viewBox="0 0 24 24">
+          <rect x="6" y="4" width="4" height="16"/>
+          <rect x="14" y="4" width="4" height="16"/>
+        </symbol>
+        <symbol id="i-zap" viewBox="0 0 24 24">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </symbol>
+        <symbol id="i-bar-chart" viewBox="0 0 24 24">
+          <line x1="12" y1="20" x2="12" y2="10"/>
+          <line x1="18" y1="20" x2="18" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="16"/>
+        </symbol>
+        <symbol id="i-rotate" viewBox="0 0 24 24">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+        </symbol>
+        <symbol id="i-x" viewBox="0 0 24 24">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </symbol>
+        <symbol id="i-chevron-left" viewBox="0 0 24 24">
+          <polyline points="15 18 9 12 15 6"/>
+        </symbol>
+        <symbol id="i-thumbs-up" viewBox="0 0 24 24">
+          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+        </symbol>
+        <symbol id="i-heart" viewBox="0 0 24 24">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </symbol>
+        <symbol id="i-arrow-right" viewBox="0 0 24 24">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </symbol>
+        <symbol id="i-percent" viewBox="0 0 24 24">
+          <line x1="19" y1="5" x2="5" y2="19"/>
+          <circle cx="6.5" cy="6.5" r="2.5"/>
+          <circle cx="17.5" cy="17.5" r="2.5"/>
+        </symbol>
+        <symbol id="i-map-pin" viewBox="0 0 24 24">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </symbol>
+        <symbol id="i-activity" viewBox="0 0 24 24">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </symbol>
+        <symbol id="i-signal" viewBox="0 0 24 24">
+          <path d="M2 17 7 12 2 7" />
+        </symbol>
+        <symbol id="i-wifi" viewBox="0 0 24 24">
+          <path d="M5 12.55a11 11 0 0 1 14 0"/>
+          <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+          <line x1="12" y1="20" x2="12.01" y2="20"/>
+        </symbol>
+        <symbol id="i-battery" viewBox="0 0 24 24">
+          <rect x="2" y="7" width="18" height="10" rx="2" ry="2"/>
+          <line x1="22" y1="11" x2="22" y2="13"/>
+          <rect x="4" y="9" width="14" height="6" fill="currentColor" stroke="none"/>
+        </symbol>
+      </defs>
+    </svg>
+
+    <main class="app-shell">
+      <!-- ===== 상단 브랜드 바 ===== -->
+      <header class="top-bar reveal reveal-d1">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">A</div>
+          <div>
+            <h1 class="brand-name">안심드라이브</h1>
+            <div class="brand-meta">Team-J · MVP Demo · v2.0</div>
+          </div>
+        </div>
+        <div class="top-bar-right">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>실시간 데모 시연 중</span>
+        </div>
+      </header>
+
+      <!-- ===== 비즈니스 라이브 대시보드 ===== -->
+      <section class="biz-dashboard reveal reveal-d2" aria-label="비즈니스 라이브 지표">
+        <div class="biz-card featured">
+          <span class="biz-card-label">ARR (Year 1)</span>
+          <strong class="biz-card-value" data-counter="300000000" data-format="krw">₩0</strong>
+          <span class="biz-card-delta up">
+            <svg class="icon icon-sm"><use href="#i-trending-up"/></svg>
+            Year 2: ₩18.4억 → Year 3: ₩60억
+          </span>
+        </div>
+        <div class="biz-card">
+          <span class="biz-card-label">가입 가족 수</span>
+          <strong class="biz-card-value" data-counter="5432" data-format="num">0</strong>
+          <span class="biz-card-delta up">
+            <svg class="icon icon-sm"><use href="#i-trending-up"/></svg>
+            +217 / 이번 주
+          </span>
+        </div>
+        <div class="biz-card">
+          <span class="biz-card-label">B/C 비율</span>
+          <strong class="biz-card-value" data-counter="3.35" data-format="ratio">0</strong>
+          <span class="biz-card-delta up">
+            <svg class="icon icon-sm"><use href="#i-check"/></svg>
+            &gt; 1.0 경제적 타당성
+          </span>
+        </div>
+        <div class="biz-card">
+          <span class="biz-card-label">LTV / CAC</span>
+          <strong class="biz-card-value">14 : 1</strong>
+          <span class="biz-card-delta up">
+            <svg class="icon icon-sm"><use href="#i-trending-up"/></svg>
+            업계 기준 3:1 대비 4.7배
+          </span>
+        </div>
+        <div class="biz-card donut-card" aria-label="3중 수익 구조">
+          <svg
+            class="donut-svg"
+            viewBox="0 0 36 36"
+            role="img"
+            aria-label="B2C 70%, B2B 20%, B2G 10%"
+          >
+            <circle cx="18" cy="18" r="15.915" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle>
+            <circle
+              cx="18" cy="18" r="15.915" fill="none"
+              stroke="url(#donut-mint)" stroke-width="4"
+              stroke-dasharray="70 30" stroke-dashoffset="25"
+              stroke-linecap="round"
+            ></circle>
+            <circle
+              cx="18" cy="18" r="15.915" fill="none"
+              stroke="url(#donut-purple)" stroke-width="4"
+              stroke-dasharray="20 80" stroke-dashoffset="-45"
+              stroke-linecap="round"
+            ></circle>
+            <circle
+              cx="18" cy="18" r="15.915" fill="none"
+              stroke="url(#donut-amber)" stroke-width="4"
+              stroke-dasharray="10 90" stroke-dashoffset="-65"
+              stroke-linecap="round"
+            ></circle>
+            <defs>
+              <linearGradient id="donut-mint" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#5eead4" />
+                <stop offset="100%" stop-color="#38bdf8" />
+              </linearGradient>
+              <linearGradient id="donut-purple" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#a78bfa" />
+                <stop offset="100%" stop-color="#6366f1" />
+              </linearGradient>
+              <linearGradient id="donut-amber" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#fbbf24" />
+                <stop offset="100%" stop-color="#f97316" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="donut-legend">
+            <div class="biz-card-label" style="margin-bottom: 4px">3중 수익 구조</div>
+            <div class="donut-legend-row">
+              <span class="donut-legend-dot" style="background: var(--grad-mint)"></span>
+              <span><strong style="color: var(--text-primary)">70%</strong> · B2C 가족 구독</span>
+            </div>
+            <div class="donut-legend-row">
+              <span class="donut-legend-dot" style="background: var(--grad-purple)"></span>
+              <span><strong style="color: var(--text-primary)">20%</strong> · B2B 보험사</span>
+            </div>
+            <div class="donut-legend-row">
+              <span class="donut-legend-dot" style="background: var(--grad-amber)"></span>
+              <span><strong style="color: var(--text-primary)">10%</strong> · B2G 바우처</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Split-screen 데모 무대 ===== -->
+      <section class="demo-stage" aria-label="자녀-부모 동시 데모">
+        <!-- ----- 좌: 자녀 폰 (Payer) ----- -->
+        <div class="persona-card reveal reveal-d3">
+          <header class="persona-header">
+            <span class="persona-tag payer">결제자 · Payer</span>
+            <div class="persona-name">김미영 (48)</div>
+            <div class="persona-meta">서울 · 직장인 · 자녀 / 아버지 운전 걱정</div>
+          </header>
+
+          <div class="phone child-phone" data-parallax="left">
+            <div
+              class="notification-banner"
+              id="childNotificationBanner"
+              role="alert"
+              aria-live="polite"
+            >
+              <div class="notif-icon">
+                <svg class="icon"><use href="#i-alert"/></svg>
+              </div>
+              <div class="notif-body">
+                <div class="notif-app">안심드라이브</div>
+                <div class="notif-title">아버지 위험 운전 감지 · 점수 -4</div>
+              </div>
+            </div>
+
+            <div class="phone-screen">
+              <div class="status-bar">
+                <span>9:41</span>
+                <span class="status-bar-icons">
+                  <svg class="icon icon-sm"><use href="#i-signal"/></svg>
+                  <svg class="icon icon-sm"><use href="#i-wifi"/></svg>
+                  <svg class="icon icon-sm"><use href="#i-battery"/></svg>
+                </span>
+              </div>
+
+              <div class="phone-content">
+                <div class="child-greet">
+                  <small>월요일 오전 9:41</small>
+                  <h2>이번 주 <strong>아버지 운전</strong>은요?</h2>
+                </div>
+
+                <!-- 안전 점수 hero -->
+                <div class="score-hero">
+                  <div class="score-hero-label">이번 주 안전 점수</div>
+                  <div class="score-hero-row">
+                    <div class="score-hero-num" id="scoreHeroNum">73</div>
+                    <div class="score-hero-unit">점 / 100</div>
+                    <div class="score-hero-delta" id="scoreHeroDelta">
+                      <svg class="icon icon-sm" id="scoreDeltaIcon"><use href="#i-trending-up"/></svg>
+                      +5
+                    </div>
+                  </div>
+                  <div class="score-hero-meta">
+                    <span>총 운전 <strong id="scoreHeroDistance">187km</strong></span>
+                    <span><strong id="scoreHeroEvents">2건</strong> 위험 감지</span>
+                  </div>
+                </div>
+
+                <!-- 6개월 추세 차트 -->
+                <div class="trend-card">
+                  <div class="trend-card-header">
+                    <span class="trend-card-title">
+                      <svg class="icon icon-sm" style="color: var(--accent-mint); margin-right: 4px"><use href="#i-activity"/></svg>
+                      6개월 안전 점수 추세
+                    </span>
+                    <span class="trend-card-period" id="trendPeriod">실시간</span>
+                  </div>
+                  <svg
+                    class="trend-svg"
+                    viewBox="0 0 300 110"
+                    preserveAspectRatio="none"
+                    aria-label="안전 점수 추세 그래프"
+                  >
+                    <defs>
+                      <linearGradient id="trend-fill" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="rgba(94, 234, 212, 0.4)" />
+                        <stop offset="100%" stop-color="rgba(94, 234, 212, 0)" />
+                      </linearGradient>
+                      <linearGradient id="trend-line" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#5eead4"/>
+                        <stop offset="100%" stop-color="#38bdf8"/>
+                      </linearGradient>
+                    </defs>
+                    <path
+                      id="trendPath"
+                      d="M 0,30 L 60,40 L 120,50 L 180,55 L 240,68 L 300,85"
+                      fill="none"
+                      stroke="url(#trend-line)"
+                      stroke-width="2.5"
+                      stroke-linejoin="round"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      id="trendFill"
+                      d="M 0,30 L 60,40 L 120,50 L 180,55 L 240,68 L 300,85 L 300,110 L 0,110 Z"
+                      fill="url(#trend-fill)"
+                    />
+                    <circle id="trendDot" cx="300" cy="85" r="4" fill="#5eead4" />
+                  </svg>
+                  <div class="trend-month-labels">
+                    <span>10월</span>
+                    <span>11월</span>
+                    <span>12월</span>
+                    <span>1월</span>
+                    <span>2월</span>
+                    <span>3월</span>
+                  </div>
+                </div>
+
+                <!-- 이벤트 타임라인 -->
+                <div class="event-list" id="childEventList">
+                  <div class="event-list-title">최근 위험 이벤트</div>
+
+                  <article class="event-card warn">
+                    <div class="event-icon">
+                      <svg class="icon"><use href="#i-alert"/></svg>
+                    </div>
+                    <div class="event-body">
+                      <span class="event-time">화 · 오후 2:15</span>
+                      <span class="event-title">급제동 1회</span>
+                      <span class="event-desc">월드컵북로 신호등 진입 구간</span>
+                    </div>
+                  </article>
+
+                  <article class="event-card good">
+                    <div class="event-icon">
+                      <svg class="icon"><use href="#i-check"/></svg>
+                    </div>
+                    <div class="event-body">
+                      <span class="event-time">월 · 오전 10:42</span>
+                      <span class="event-title">안전 귀가 완료</span>
+                      <span class="event-desc">병원 → 자택 12.4km 무사고</span>
+                    </div>
+                  </article>
+                </div>
+
+                <!-- 카카오톡 대화 가이드 -->
+                <div class="kakao-guide">
+                  <div class="kakao-guide-header">
+                    <div class="kakao-icon">
+                      <svg class="icon"><use href="#i-message"/></svg>
+                    </div>
+                    <span class="kakao-guide-title">데이터 기반 대화 가이드</span>
+                  </div>
+                  <p class="kakao-guide-desc">
+                    "아버지, 이번 주 점수가 5점 올랐어요!" 라고 시작하면
+                    자존심 상하지 않게 운전 안전 대화를 이어갈 수 있어요.
+                  </p>
+                  <button class="kakao-cta" data-action="open-kakao">
+                    <svg class="icon icon-sm"><use href="#i-message"/></svg>
+                    카카오톡으로 보내기
+                  </button>
+                </div>
+
+                <!-- 보험 할인 카드 -->
+                <div class="benefit-card">
+                  <div class="benefit-icon">
+                    <svg class="icon icon-md"><use href="#i-shield"/></svg>
+                  </div>
+                  <div class="benefit-content">
+                    <strong>UBI 보험료 12% 할인 가능</strong>
+                    <small>삼성화재 · 점수 80점+ 자동 적용</small>
+                  </div>
+                  <span class="benefit-arrow">
+                    <svg class="icon icon-sm"><use href="#i-arrow-right"/></svg>
+                  </span>
+                </div>
+
+                <!-- 면허 반납 결정 카드 (Time-lapse 끝에 등장) -->
+                <div class="decision-card" id="decisionCard">
+                  <div class="decision-icon">
+                    <svg class="icon icon-md"><use href="#i-handshake"/></svg>
+                  </div>
+                  <div class="decision-title">면허 반납 상담 연결</div>
+                  <p class="decision-desc">
+                    6개월간 점수가 85→55로 지속 하락. 데이터 근거를 가지고
+                    아버지께 자연스럽게 대화를 시작해보시겠어요?
+                  </p>
+                  <button class="decision-cta">전문 상담 + 교통 바우처 신청</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <section class="screen active" data-screen="home" aria-label="홈">
-          <header class="topbar">
-            <div>
-              <p class="caption naver-caption">실시간 위치</p>
-              <h1 data-child="아버지 위치" data-parent="가족 액자">아버지 차량 위치</h1>
-            </div>
-            <button class="icon-button" data-action="notify" aria-label="알림">
-              <span>!</span>
-            </button>
+        <!-- ----- 중앙: VS 마크 ----- -->
+        <div class="payer-vs-user reveal reveal-pop reveal-d4">
+          <div class="vs-mark">PAYER ≠ USER</div>
+        </div>
+
+        <!-- ----- 우: 부모 폰 (User) ----- -->
+        <div class="persona-card reveal reveal-d5">
+          <header class="persona-header">
+            <span class="persona-tag user">사용자 · User</span>
+            <div class="persona-name">박영수 (74)</div>
+            <div class="persona-meta">경기도 · 은퇴자 · 마트·병원 운전 主</div>
           </header>
 
-          <section class="family-frame parent-only" aria-label="가족 사진 액자">
-            <div class="family-photo" id="parentFamilyPhoto" role="img" aria-label="자녀와 손주 사진">
-              <div class="photo-placeholder">
-                <strong>가족 사진</strong>
-                <span>자녀 버전에서 바꿀 수 있어요</span>
+          <div class="phone parent-phone" data-parallax="right">
+            <div class="phone-screen parent-screen">
+              <div class="status-bar">
+                <span>2:32</span>
+                <span class="status-bar-icons">
+                  <svg class="icon icon-sm"><use href="#i-signal"/></svg>
+                  <svg class="icon icon-sm"><use href="#i-wifi"/></svg>
+                  <svg class="icon icon-sm"><use href="#i-battery"/></svg>
+                </span>
+              </div>
+
+              <div class="phone-content">
+                <div class="parent-clock" id="parentClock">14:32</div>
+                <div class="parent-date" id="parentDate">3월 27일 (수)</div>
+                <div class="parent-weather">
+                  <svg class="icon" style="color: var(--accent-amber)"><use href="#i-sun"/></svg>
+                  <span>맑음 · 18°C</span>
+                </div>
+
+                <div class="parent-family-frame">
+                  <div class="parent-family-photo" id="parentFamilyPhoto" aria-label="가족 사진"></div>
+                  <div class="parent-family-message">
+                    <small>딸 미영의 한마디</small>
+                    <p id="parentFamilyMessage">아빠, 오늘도 천천히 안전하게 다녀오세요. 도착하면 톡 주세요.</p>
+                  </div>
+                </div>
+
+                <div class="parent-running-indicator">
+                  <span class="running-pulse"></span>
+                  <span>안심드라이브 <strong>백그라운드 실행 중</strong> · 부모님은 아무것도 하실 필요 없습니다</span>
+                </div>
+              </div>
+
+              <!-- 운전 중 오버레이 (자동 활성화) -->
+              <div class="parent-driving-overlay" id="parentDrivingOverlay">
+                <div class="driving-label">
+                  <svg class="icon icon-sm" style="vertical-align: -3px; margin-right: 4px"><use href="#i-play"/></svg>
+                  운전 중 · 자동 분석
+                </div>
+                <div class="driving-speed" id="drivingSpeed">42</div>
+                <div class="driving-speed-unit">km/h · 제한속도 50</div>
+                <div class="driving-map" id="drivingMap">
+                  <svg viewBox="0 0 280 320" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                      <linearGradient id="route-grad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#5eead4" stop-opacity="0.9" />
+                        <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.9" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M 0 60 L 280 60" stroke="rgba(255,255,255,0.06)" stroke-width="20" />
+                    <path d="M 0 160 L 280 160" stroke="rgba(255,255,255,0.06)" stroke-width="20" />
+                    <path d="M 0 260 L 280 260" stroke="rgba(255,255,255,0.06)" stroke-width="20" />
+                    <path d="M 80 0 L 80 320" stroke="rgba(255,255,255,0.06)" stroke-width="20" />
+                    <path d="M 200 0 L 200 320" stroke="rgba(255,255,255,0.06)" stroke-width="20" />
+                    <path
+                      id="routePath"
+                      d="M 30 290 L 80 290 L 80 160 L 200 160 L 200 60 L 250 60"
+                      stroke="url(#route-grad)"
+                      stroke-width="4"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-dasharray="6 6"
+                    />
+                    <circle cx="30" cy="290" r="6" fill="#94a3b8" />
+                    <circle cx="250" cy="60" r="6" fill="#fbbf24" />
+                    <text x="40" y="304" fill="rgba(255,255,255,0.5)" font-size="9">출발</text>
+                    <text x="220" y="50" fill="rgba(255,255,255,0.7)" font-size="9">병원</text>
+                  </svg>
+                  <div class="car-marker" id="carMarker" style="left: 14px; top: 280px">
+                    <svg class="icon" viewBox="0 0 24 24" style="color: var(--bg-deepest); stroke-width: 2"><use href="#i-car"/></svg>
+                  </div>
+                </div>
+                <div class="driving-info-row">
+                  <div>
+                    <div>경과 시간</div>
+                    <strong id="drivingTime">8분</strong>
+                  </div>
+                  <div>
+                    <div>남은 거리</div>
+                    <strong id="drivingDistance">4.2 km</strong>
+                  </div>
+                  <div>
+                    <div>이상 이벤트</div>
+                    <strong id="drivingEvents" style="color: var(--accent-mint)">0</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Time-lapse 오버레이 -->
+              <div class="timelapse-overlay" id="timelapseOverlay">
+                <div class="timelapse-meta">
+                  <small>TIME-LAPSE</small>
+                  <div class="timelapse-month" id="timelapseMonth">10월</div>
+                </div>
+                <div class="timelapse-score" id="timelapseScore">85</div>
               </div>
             </div>
-            <div class="family-message">
-              <span>자녀의 한마디</span>
-              <p id="parentFamilyMessage">아빠, 오늘도 천천히 안전하게 다녀오세요. 도착하면 톡 주세요.</p>
-            </div>
-          </section>
+          </div>
+        </div>
+      </section>
 
-          <section class="naver-map-card child-only" aria-label="네이버지도 운행 지도 미리보기">
-            <div class="map-toolbar">
-              <span class="naver-logo">N</span>
-              <div>
-                <strong>상암동 월드컵북로</strong>
-                <p data-child="네이버지도 기반 실시간 위치" data-parent="목적지까지 12분 남았습니다">네이버지도 기반 실시간 위치</p>
-              </div>
-              <button class="map-chip">경로</button>
-            </div>
-            <div class="road road-a"></div>
-            <div class="road road-b"></div>
-            <div class="road road-c"></div>
-            <div class="road road-d"></div>
-            <div class="route"></div>
-            <div class="car-marker" aria-hidden="true"></div>
-            <span class="poi poi-a">주유소</span>
-            <span class="poi poi-b">병원</span>
-            <span class="speed-zone">50</span>
-            <div class="map-label">
-              <span data-child="현재 속도" data-parent="안내">현재 속도</span>
-              <strong data-child="42km/h" data-parent="전방을 확인해주세요">42km/h</strong>
-            </div>
-          </section>
+      <!-- ===== 데모 컨트롤 바 ===== -->
+      <section class="demo-controls reveal reveal-d6" aria-label="데모 컨트롤">
+        <span class="ctrl-label">DEMO</span>
+        <button class="ctrl-btn primary" id="btnAutoPlay" type="button" aria-label="90초 자동 데모 재생/정지">
+          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-play"/></svg>
+          90초 자동 데모
+        </button>
+        <div class="ctrl-progress-track" id="autoProgressTrack" role="progressbar" aria-label="데모 진행 상태" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="ctrl-progress-fill" id="autoProgressFill"></div>
+        </div>
+        <div class="ctrl-divider" aria-hidden="true"></div>
+        <button class="ctrl-btn danger" id="btnTriggerEvent" type="button" aria-label="위험 운전 이벤트 시뮬레이션">
+          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-zap"/></svg>
+          위험 이벤트 시뮬
+        </button>
+        <button class="ctrl-btn" id="btnOpenKakao" type="button" aria-label="카카오톡 대화 가이드 모달 열기">
+          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-message"/></svg>
+          카카오톡 대화
+        </button>
+        <button class="ctrl-btn" id="btnTimelapse" type="button" aria-label="6개월 점수 추세 Time-lapse 재생">
+          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-bar-chart"/></svg>
+          6개월 Time-lapse
+        </button>
+        <div class="ctrl-divider" aria-hidden="true"></div>
+        <button class="ctrl-btn" id="btnReset" type="button" title="초기 상태로" aria-label="데모 초기 상태로 리셋">
+          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-rotate"/></svg>
+          리셋
+        </button>
+      </section>
 
-          <button class="parent-score-card parent-only" data-action="parent-score">
-            <span>무료 안전 운전 점수</span>
-            <strong>82점</strong>
-            <p>오늘은 안정적으로 운전하고 계세요.</p>
+      <!-- ===== 푸터 비즈니스 메모 ===== -->
+      <section class="biz-footnote reveal reveal-d6">
+        <div class="biz-footnote-item">
+          <span>TAM</span>
+          <strong>1.2조원/년</strong>
+          <small>국내 65세+ 면허 보유자 가족이 지불 가능한 전체 시장 · 498만 명 → 2050년 983만 명</small>
+        </div>
+        <div class="biz-footnote-item">
+          <span>3중 수익 구조</span>
+          <strong>B2C + B2B + B2G</strong>
+          <small>가족 구독(4.9k~9.9k원) + 보험사 UBI 제휴 + 면허 반납 바우처 중개. 불황 저항성 확보</small>
+        </div>
+        <div class="biz-footnote-item">
+          <span>핵심 차별점</span>
+          <strong>Payer ≠ User</strong>
+          <small>고령자 디지털 거부감을 구조적으로 우회 · Zero-Touch UX · 인지력 저하 감지 특허 기반 Moat</small>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== 카카오톡 대화 모달 ===== -->
+    <div class="kakao-modal" id="kakaoModal" role="dialog" aria-modal="true" aria-label="카카오톡 대화">
+      <div class="kakao-modal-shell">
+        <header class="kakao-header">
+          <span class="kakao-back" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chevron-left"/></svg>
+          </span>
+          <span class="kakao-name">아버지
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="#ef4444" stroke="#ef4444" stroke-width="1.6" style="vertical-align: -2px" aria-hidden="true"><use href="#i-heart"/></svg>
+          </span>
+          <button class="kakao-close" id="kakaoClose" type="button" aria-label="대화 닫기">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#6b7280" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-x"/></svg>
           </button>
-
-          <section class="info-strip parent-only">
-            <div>
-              <span>날씨</span>
-              <strong>맑음 18도</strong>
-            </div>
-            <div>
-              <span>남은 거리</span>
-              <strong>4.2km</strong>
-            </div>
-          </section>
-
-          <section class="score-panel compact child-only">
-            <div class="score-ring" aria-label="안심 점수 82점">
-              <strong id="safetyScore">82</strong>
-              <span>점</span>
-            </div>
-            <div class="score-copy">
-              <p>오늘 18.4km 운행</p>
-              <h2>주의 운전 2건 감지</h2>
-              <span>네이버지도 경로와 위험 구간 매칭</span>
-            </div>
-          </section>
-
-          <button class="cognition-card child-only" data-action="cognition-report">
-            <span>무료 인지도 점수</span>
-            <strong>74점</strong>
-            <p>자세한 월별 인지도 리포트는 구독 시 제공됩니다.</p>
+        </header>
+        <div class="kakao-body" id="kakaoBody">
+          <!-- bubbles inserted by JS -->
+        </div>
+        <div class="kakao-suggestions" id="kakaoSuggestions">
+          <div class="kakao-suggestion-label">앱이 제안하는 메시지</div>
+          <button class="kakao-suggestion" data-message="아빠~ 이번 주 아버지 운전 점수 73점이래요! 5점이나 올랐어요. 잘 하고 계신 것 같아요. 다음 주말에 한 번 들를게요!">
+            <strong style="display: inline-flex; align-items: center; gap: 6px; color: #92400e">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-thumbs-up"/></svg>
+              칭찬으로 시작하기
+            </strong>
+            <div style="margin-top: 4px; color: #4b5563">"5점 올랐어요!"</div>
           </button>
-
-          <section class="locked-preview child-only child-free-only" data-action="cognition-report">
-            <div class="lock-icon">잠금</div>
-            <div>
-              <span>구독 시 해금</span>
-              <h2>3개월 인지도 변화 리포트</h2>
-              <p>반응 지연, 반복 경로 이탈, 급조작 패턴을 월별로 비교합니다.</p>
-            </div>
-          </section>
-
-          <section class="premium-insight child-only child-paid-only">
-            <span>유료 리포트 활성화</span>
-            <h2>인지도 변화 안정권</h2>
-            <p>최근 3개월 경로 이탈은 1회, 반응 지연 의심 패턴은 전월 대비 18% 감소했습니다.</p>
-          </section>
-
-          <section class="quick-grid child-only">
-            <button class="metric-tile" data-action="open-alerts">
-              <span>급감속</span>
-              <strong>1회</strong>
-            </button>
-            <button class="metric-tile" data-action="open-report">
-              <span>과속 구간</span>
-              <strong>2분</strong>
-            </button>
-            <button class="metric-tile">
-              <span>야간 운전</span>
-              <strong>0분</strong>
-            </button>
-          </section>
-
-          <section class="parent-guide-list parent-only">
-            <article>
-              <span>1</span>
-              <div>
-                <h3>차간 거리를 유지해주세요</h3>
-                <p>앞차와 거리가 가까워지고 있습니다.</p>
-              </div>
-            </article>
-            <article>
-              <span>2</span>
-              <div>
-                <h3>도착 후 휴식을 추천해요</h3>
-                <p>오늘 누적 운전 시간은 48분입니다.</p>
-              </div>
-            </article>
-          </section>
-
-          <button class="emergency-button parent-only" data-action="emergency">
-            자녀에게 긴급연락하기
+          <button class="kakao-suggestion" data-message="아버지 오늘 야간 운전 감지됐어요. 혹시 무슨 일 있으세요? 다음에는 제가 모실 테니 편하게 말씀해주세요. 걱정돼서요...">
+            <strong style="display: inline-flex; align-items: center; gap: 6px; color: #b91c1c">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="#ef4444" stroke="#ef4444" stroke-width="1.6"><use href="#i-heart"/></svg>
+              걱정 표현
+            </strong>
+            <div style="margin-top: 4px; color: #4b5563">비난이 아닌 배려의 언어로</div>
           </button>
-
-          <section class="section-block child-only">
-            <div class="section-heading">
-              <h2>가족 알림</h2>
-              <button class="text-button" data-action="open-alerts">전체</button>
-            </div>
-            <div class="alert-list">
-              <article class="alert-item warning">
-                <span class="alert-dot"></span>
-                <div>
-                  <h3>급감속 패턴이 감지됐어요</h3>
-                  <p>오후 4:12, 내부순환로 진입 전</p>
-                </div>
-              </article>
-              <article class="alert-item">
-                <span class="alert-dot"></span>
-                <div>
-                  <h3>목적지 근처에 도착했어요</h3>
-                  <p>오후 4:28, 상암동 주차장</p>
-                </div>
-              </article>
-            </div>
-          </section>
-        </section>
-
-        <section class="screen kakao-screen" data-screen="report" aria-label="카카오톡 대화">
-          <header class="topbar">
-            <div>
-              <p class="caption kakao-caption">가족 톡</p>
-              <h1 data-child="부모님께 보낼 말" data-parent="가족에게 공유">부모님께 보낼 말</h1>
-            </div>
-            <button class="small-button kakao-button" data-action="share">전송</button>
-          </header>
-
-          <section class="kakao-room">
-            <div class="kakao-room-head">
-              <span data-child="아버지" data-parent="자녀">아버지</span>
-              <strong>카카오톡</strong>
-            </div>
-            <div class="chat-row incoming">
-              <p data-child="오늘 운전 별일 없었지?" data-parent="아빠, 지금 목적지까지 잘 가고 있어요?">오늘 운전 별일 없었지?</p>
-            </div>
-            <div class="chat-row outgoing">
-              <p data-child="네이버지도 기준으로 상암동까지 잘 도착하셨어요." data-parent="응, 네이버지도 보고 천천히 가는 중이야.">네이버지도 기준으로 상암동까지 잘 도착하셨어요.</p>
-            </div>
-            <div class="chat-card parent-only">
-              <span>카카오톡 자동 공유</span>
-              <strong>차를 멈추면 자녀에게 톡을 보내주세요.</strong>
-              <p>운전 중에는 화면을 보거나 답장하지 않아도 됩니다. 안전한 곳에 정차한 뒤 확인하세요.</p>
-            </div>
-            <div class="ai-locked-card child-only child-free-only" data-action="subscribe">
-              <span>유료 기능</span>
-              <strong>AI 대화 제안은 플러스에서 열립니다</strong>
-              <p>운전 데이터를 바탕으로 부모님께 부담 없이 말할 수 있는 카카오톡 문안을 추천합니다.</p>
-              <button data-action="subscribe">AI 대화 제안 열기</button>
-            </div>
-            <div class="chat-card child-only child-paid-only">
-              <span>AI 대화 제안</span>
-              <strong>아빠, 이번 달은 훨씬 안정적으로 운전했어. 월드컵북로 진입 전만 조금 천천히 가면 더 좋겠어.</strong>
-              <p>칭찬 후 한 구간만 짚는 방식이라 방어감이 낮고 대화가 이어질 가능성이 높습니다.</p>
-            </div>
-          </section>
-
-          <section class="talk-options child-only child-paid-only">
-            <button data-action="soft-talk">
-              <span>부드럽게</span>
-              <strong>칭찬 후 확인</strong>
-            </button>
-            <button data-action="direct-talk">
-              <span>명확하게</span>
-              <strong>위험 구간 공유</strong>
-            </button>
-          </section>
-
-          <section class="parent-easy-actions parent-only">
-            <button data-action="share">현재 위치 가족에게 보내기</button>
-            <button data-action="notify">운전 안내 다시 듣기</button>
-          </section>
-
-          <section class="parent-talk-panel parent-only">
-            <article>
-              <span>카카오톡 가족 공유</span>
-              <h2>멈추면 보내주세요</h2>
-              <p>안전한 곳에 차를 세운 뒤 자녀에게 현재 위치를 보내면 됩니다.</p>
-            </article>
-            <article>
-              <span>큰 글씨 안내</span>
-              <h2>운전 중엔 보지 마세요</h2>
-              <p>필요한 내용은 정차 후 천천히 확인하셔도 됩니다.</p>
-            </article>
-          </section>
-
-          <section class="section-block child-only">
-            <div class="section-heading">
-              <h2>카카오톡 공유 카드</h2>
-            </div>
-            <div class="kakao-share-card">
-              <div>
-                <span>안심드라이브 리포트</span>
-                <h3>이번 주 안전 점수 86점</h3>
-                <p>급감속 4회 감소, 과속 시간 31% 감소</p>
-              </div>
-              <button data-action="share">톡 공유</button>
-            </div>
-          </section>
-
-          <section class="family-frame-settings child-only">
-            <div class="section-heading">
-              <h2>부모 화면 액자 설정</h2>
-            </div>
-            <div class="photo-setting-card">
-              <div class="family-photo-preview" id="childFamilyPhotoPreview">
-                <div class="photo-placeholder">
-                  <strong>가족 사진</strong>
-                  <span>사진을 올려주세요</span>
-                </div>
-              </div>
-              <label class="upload-button" for="familyPhotoInput">사진 업로드</label>
-              <input id="familyPhotoInput" type="file" accept="image/*" />
-            </div>
-            <label class="message-editor" for="familyMessageInput">
-              자녀의 한마디
-              <textarea id="familyMessageInput" rows="3">아빠, 오늘도 천천히 안전하게 다녀오세요. 도착하면 톡 주세요.</textarea>
-            </label>
-            <button class="save-message-button" data-action="save-family-frame">부모 화면에 반영</button>
-          </section>
-        </section>
-
-        <section class="screen" data-screen="alerts" aria-label="알림">
-          <header class="topbar">
-            <div>
-              <p class="caption naver-caption" data-child="위험 구간" data-parent="오늘 정보">네이버지도 위험 구간</p>
-              <h1 data-child="운행 이벤트" data-parent="운전 정보">운행 이벤트</h1>
-            </div>
-            <button class="small-button child-only" data-action="simulate">시뮬레이션</button>
-          </header>
-
-          <section class="parent-info-board parent-only">
-            <button class="habit-check-card" data-action="parent-score">
-              <span>운전습관 확인해보기</span>
-              <strong>82점</strong>
-              <p>오늘은 급가속 없이 안정적인 편입니다.</p>
-            </button>
-            <article class="parent-info-card weather-info">
-              <span>오늘 날씨</span>
-              <h2>맑음 18도</h2>
-              <p>도로가 건조하고 시야가 좋습니다. 선글라스를 준비하면 눈부심을 줄일 수 있어요.</p>
-            </article>
-            <article class="parent-info-card health-info">
-              <span>건강 안내</span>
-              <h2>물을 자주 마셔주세요</h2>
-              <p>장거리 운전 전에는 물을 조금씩 마시고, 비타민이 있는 과일을 챙기면 좋습니다.</p>
-            </article>
-            <article class="parent-info-card health-info">
-              <span>식사 안내</span>
-              <h2>편식하지 마세요</h2>
-              <p>운전 전에는 너무 기름진 음식보다 가벼운 식사가 집중에 도움이 됩니다.</p>
-            </article>
-          </section>
-
-          <section class="event-timeline child-only" id="eventTimeline">
-            <article class="event-card critical">
-              <span>오늘 16:12</span>
-              <h2 data-child="급감속" data-parent="전방 확인">급감속</h2>
-              <p data-child="네이버지도 교통 정체 구간 진입 전 2.8초 내 속도 변화가 감지됐습니다." data-parent="앞쪽 교통 흐름이 느려지고 있습니다. 차간 거리를 유지해주세요.">네이버지도 교통 정체 구간 진입 전 2.8초 내 속도 변화가 감지됐습니다.</p>
-              <button class="inline-button kakao-inline" data-action="call">카톡으로 확인</button>
-            </article>
-            <article class="event-card">
-              <span>오늘 15:44</span>
-              <h2 data-child="과속 주의" data-parent="속도 안내">과속 주의</h2>
-              <p data-child="네이버지도 제한속도 50km/h 구간에서 2분간 58km/h로 주행했습니다." data-parent="300m 앞 제한속도 50km/h 구간입니다. 천천히 진입해주세요.">네이버지도 제한속도 50km/h 구간에서 2분간 58km/h로 주행했습니다.</p>
-            </article>
-            <article class="event-card calm">
-              <span>어제 19:02</span>
-              <h2 data-child="안전 귀가" data-parent="도착 안내">안전 귀가</h2>
-              <p data-child="예상 목적지에 도착했고 야간 운전 위험은 감지되지 않았습니다." data-parent="목적지에 도착하면 카카오톡으로 가족에게 자동 공유됩니다.">예상 목적지에 도착했고 야간 운전 위험은 감지되지 않았습니다.</p>
-            </article>
-          </section>
-        </section>
-
-        <section class="screen" data-screen="partners" aria-label="제휴">
-          <header class="topbar">
-            <div>
-              <p class="caption">플러스</p>
-              <h1 data-child="혜택 연결" data-parent="운전 정보">혜택 연결</h1>
-            </div>
-            <button class="small-button" data-action="apply">신청</button>
-          </header>
-
-          <section class="subscription-card child-only child-free-only">
-            <span>안심드라이브 플러스</span>
-            <h2>구독 시 해금되는 기능</h2>
-            <p>월별 리포트와 AI 대화 제안으로 부모님의 운전 변화를 부담 없이 이야기할 수 있습니다.</p>
-            <button data-action="subscribe">월 4,900원 구독</button>
-          </section>
-
-          <section class="subscription-card active-plan child-only child-paid-only">
-            <span>안심드라이브 플러스 이용 중</span>
-            <h2>월별 리포트가 열렸어요</h2>
-            <p>부모님의 운전 습관과 인지도 변화를 매월 자동으로 정리합니다.</p>
-            <button data-action="subscribe">이번 달 리포트 보기</button>
-          </section>
-
-          <section class="unlock-list child-only child-free-only">
-            <article>
-              <span>01</span>
-              <div>
-                <h2>월별 부모 운전 리포트</h2>
-                <p>안전 점수, 급감속, 과속, 야간 운전, 위험 구간 변화를 한 장의 리포트로 제공합니다.</p>
-              </div>
-            </article>
-            <article>
-              <span>02</span>
-              <div>
-                <h2>인지도 변화 체크</h2>
-                <p>반복 경로 이탈, 반응 지연, 급조작 패턴을 장기 추세로 비교합니다.</p>
-              </div>
-            </article>
-            <article>
-              <span>03</span>
-              <div>
-                <h2>AI 대화 제안</h2>
-                <p>운전 리포트를 바탕으로 부모님께 보낼 카카오톡 문안을 자동으로 추천합니다.</p>
-              </div>
-            </article>
-          </section>
-
-          <section class="monthly-report child-only child-free-only">
-            <div class="section-heading">
-              <h2>월별 리포트 예시</h2>
-              <button class="text-button" data-action="subscribe">해금</button>
-            </div>
-            <div class="report-card locked">
-              <div class="report-head">
-                <span>2026년 5월</span>
-                <strong>부모 운전 리포트</strong>
-              </div>
-              <div class="report-metrics">
-                <div>
-                  <span>안전 점수</span>
-                  <strong>82</strong>
-                </div>
-                <div>
-                  <span>인지도</span>
-                  <strong>74</strong>
-                </div>
-                <div>
-                  <span>위험 변화</span>
-                  <strong>-31%</strong>
-                </div>
-              </div>
-              <p>구독 시 월별 추세, 위험 구간 지도, 가족 대화 가이드가 함께 제공됩니다.</p>
-            </div>
-          </section>
-
-          <section class="monthly-report child-only child-paid-only">
-            <div class="section-heading">
-              <h2>이번 달 리포트</h2>
-              <button class="text-button" data-action="share">공유</button>
-            </div>
-            <div class="report-card premium">
-              <div class="report-head">
-                <span>2026년 5월</span>
-                <strong>부모 운전 리포트</strong>
-              </div>
-              <div class="report-metrics">
-                <div>
-                  <span>안전 점수</span>
-                  <strong>82</strong>
-                </div>
-                <div>
-                  <span>인지도</span>
-                  <strong>74</strong>
-                </div>
-                <div>
-                  <span>위험 변화</span>
-                  <strong>-31%</strong>
-                </div>
-              </div>
-              <p>급감속은 줄었고 반복 경로 이탈은 1회만 감지됐습니다. 다음 달까지 야간 운전 시간을 함께 관찰하세요.</p>
-            </div>
-          </section>
-
-          <section class="full-report child-only child-paid-only">
-            <article class="report-section-card">
-              <span>운전 습관 분석</span>
-              <h2>급감속은 줄고, 과속 시간은 짧아졌어요</h2>
-              <div class="trend-list">
-                <div>
-                  <strong>-4회</strong>
-                  <p>급감속 전월 대비</p>
-                </div>
-                <div>
-                  <strong>-31%</strong>
-                  <p>과속 시간 변화</p>
-                </div>
-                <div>
-                  <strong>0분</strong>
-                  <p>야간 운전</p>
-                </div>
-              </div>
-            </article>
-
-            <article class="report-section-card">
-              <span>인지도 체크</span>
-              <h2>반복 경로 이탈은 1회만 감지됐습니다</h2>
-              <div class="cognition-timeline">
-                <div><span>3월</span><strong>71</strong></div>
-                <div><span>4월</span><strong>72</strong></div>
-                <div><span>5월</span><strong>74</strong></div>
-              </div>
-              <p>급조작 후 회복 시간은 안정권이며, 낯선 교차로에서만 주의 패턴이 나타났습니다. 현재는 관찰 단계입니다.</p>
-              <div class="cognition-detail-grid">
-                <div><span>경로 이탈</span><strong>1회</strong></div>
-                <div><span>반응 지연</span><strong>-18%</strong></div>
-                <div><span>반복 실수</span><strong>낮음</strong></div>
-              </div>
-            </article>
-
-            <article class="report-section-card license-card">
-              <span>운전면허 반납 타이밍</span>
-              <h2>아직은 반납 권고 단계가 아닙니다</h2>
-              <p>인지도 점수가 3개월 연속 65점 이하이거나, 경로 이탈과 급조작이 함께 늘어나면 가족 상담과 병원 검사를 권장합니다.</p>
-              <div class="license-scale">
-                <span>현재</span>
-                <strong>관찰</strong>
-                <span>상담 필요</span>
-              </div>
-            </article>
-
-            <article class="report-section-card">
-              <span>네이버지도 위험 구간</span>
-              <h2>상암동 월드컵북로 진입 전 정체 구간</h2>
-              <p>이번 달 위험 이벤트의 60%가 동일 구간에서 발생했습니다. 다음 운행 전 우회 경로 안내를 추천합니다.</p>
-            </article>
-
-            <article class="report-section-card kakao-guide">
-              <span>카카오톡 대화 가이드</span>
-              <h2>“이번 달은 훨씬 안정적으로 운전했어”</h2>
-              <p>지적보다 칭찬으로 시작하고, 월드컵북로 구간만 천천히 가자고 제안하는 흐름이 좋습니다.</p>
-              <button data-action="share">대화 가이드 공유</button>
-            </article>
-          </section>
-
-          <section class="benefit-card primary-benefit">
-            <span data-child="예상 보험 할인" data-parent="오늘 운전 환경">예상 보험 할인</span>
-            <strong data-child="월 8,400원" data-parent="맑음 · 도로 원활">월 8,400원</strong>
-            <p data-child="최근 30일 안전 점수 80점 이상 기준으로 UBI 할인 대상입니다." data-parent="날씨와 도로 상황이 안정적입니다. 목적지까지 12분 남았습니다.">최근 30일 안전 점수 80점 이상 기준으로 UBI 할인 대상입니다.</p>
-          </section>
-
-          <section class="parent-simple-info parent-only">
-            <article>
-              <span>안전 운전 점수</span>
-              <strong>82점</strong>
-              <p>급가속과 급감속 없이 안정적으로 운전하고 계세요.</p>
-            </article>
-            <article>
-              <span>운전 환경</span>
-              <strong>맑음 · 도로 원활</strong>
-              <p>목적지까지 약 12분 남았습니다.</p>
-            </article>
-          </section>
-
-          <section class="partner-list child-only">
-            <article class="partner-row">
-              <div>
-                <h2>보험사 UBI 리포트</h2>
-                <p>안전 점수와 위험 운전 데이터를 보험 할인 리포트로 연결</p>
-              </div>
-              <label class="switch">
-                <input type="checkbox" checked />
-                <span></span>
-              </label>
-            </article>
-            <article class="partner-row">
-              <div>
-                <h2>지자체 안전 바우처</h2>
-                <p>면허반납 상담, 이동지원, 고령 운전자 위험도 분석 연계</p>
-              </div>
-              <label class="switch">
-                <input type="checkbox" />
-                <span></span>
-              </label>
-            </article>
-          </section>
-
-        </section>
-      </main>
-
-      <nav class="bottom-nav" aria-label="하단 내비게이션">
-        <button class="nav-item active" data-target="home">
-          <span class="nav-icon" aria-hidden="true">N</span>
-          <span data-child="지도" data-parent="홈">지도</span>
-        </button>
-        <button class="nav-item" data-target="report">
-          <span class="nav-icon" aria-hidden="true">T</span>
-          톡
-        </button>
-        <button class="nav-item" data-target="alerts">
-          <span class="nav-icon" aria-hidden="true">!</span>
-          <span data-child="알림" data-parent="정보">알림</span>
-        </button>
-        <button class="nav-item child-only" data-target="partners">
-          <span class="nav-icon" aria-hidden="true">◇</span>
-          혜택
-        </button>
-      </nav>
+          <button class="kakao-suggestion" data-message="아버지, 안심드라이브 앱이 보여주는 점수랑 한 번 같이 보고 싶어요. 데이터를 같이 보면서 다음 운전을 어떻게 할지 이야기해봐요.">
+            <strong style="display: inline-flex; align-items: center; gap: 6px; color: #1d4ed8">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-bar-chart"/></svg>
+              데이터 공유
+            </strong>
+            <div style="margin-top: 4px; color: #4b5563">"함께 보자"는 협력 언어</div>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="./app.js" defer></script>
+
+    <script src="./app.js"></script>
   </body>
 </html>
