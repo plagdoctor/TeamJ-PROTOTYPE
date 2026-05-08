@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>네이버지도 x 카카오톡 안심드라이브</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,700;6..72,800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="child-mode child-free-mode">
+    <div class="phone-shell" aria-label="iPhone 15 Pro browser prototype">
+      <div class="browser-bar">
+        <span class="browser-lock" aria-hidden="true"></span>
+        <button class="mode-toggle" id="modeToggle" type="button">
+          <span id="modeToggleLabel">자녀</span>
+        </button>
+        <button class="plan-toggle child-only" id="planToggle" type="button">
+          <span id="planToggleLabel">무료</span>
+        </button>
+        <span>ansim-drive.kr</span>
+      </div>
+
+      <main class="app" id="app">
+        <div class="zoom-controls parent-only" aria-label="부모 버전 글자 크기">
+          <span>크게 보기</span>
+          <button class="zoom-button active" data-zoom="2">2배</button>
+          <button class="zoom-button" data-zoom="3">3배</button>
+          <button class="zoom-button" data-zoom="4">4배</button>
+        </div>
+
+        <section class="screen active" data-screen="home" aria-label="홈">
+          <header class="topbar">
+            <div>
+              <p class="caption naver-caption">실시간 위치</p>
+              <h1 data-child="아버지 위치" data-parent="가족 액자">아버지 차량 위치</h1>
+            </div>
+            <button class="icon-button" data-action="notify" aria-label="알림">
+              <span>!</span>
+            </button>
+          </header>
+
+          <section class="family-frame parent-only" aria-label="가족 사진 액자">
+            <div class="family-photo" id="parentFamilyPhoto" role="img" aria-label="자녀와 손주 사진">
+              <div class="photo-placeholder">
+                <strong>가족 사진</strong>
+                <span>자녀 버전에서 바꿀 수 있어요</span>
+              </div>
+            </div>
+            <div class="family-message">
+              <span>자녀의 한마디</span>
+              <p id="parentFamilyMessage">아빠, 오늘도 천천히 안전하게 다녀오세요. 도착하면 톡 주세요.</p>
+            </div>
+          </section>
+
+          <section class="naver-map-card child-only" aria-label="네이버지도 운행 지도 미리보기">
+            <div class="map-toolbar">
+              <span class="naver-logo">N</span>
+              <div>
+                <strong>상암동 월드컵북로</strong>
+                <p data-child="네이버지도 기반 실시간 위치" data-parent="목적지까지 12분 남았습니다">네이버지도 기반 실시간 위치</p>
+              </div>
+              <button class="map-chip">경로</button>
+            </div>
+            <div class="road road-a"></div>
+            <div class="road road-b"></div>
+            <div class="road road-c"></div>
+            <div class="road road-d"></div>
+            <div class="route"></div>
+            <div class="car-marker" aria-hidden="true"></div>
+            <span class="poi poi-a">주유소</span>
+            <span class="poi poi-b">병원</span>
+            <span class="speed-zone">50</span>
+            <div class="map-label">
+              <span data-child="현재 속도" data-parent="안내">현재 속도</span>
+              <strong data-child="42km/h" data-parent="전방을 확인해주세요">42km/h</strong>
+            </div>
+          </section>
+
+          <button class="parent-score-card parent-only" data-action="parent-score">
+            <span>무료 안전 운전 점수</span>
+            <strong>82점</strong>
+            <p>오늘은 안정적으로 운전하고 계세요.</p>
+          </button>
+
+          <section class="info-strip parent-only">
+            <div>
+              <span>날씨</span>
+              <strong>맑음 18도</strong>
+            </div>
+            <div>
+              <span>남은 거리</span>
+              <strong>4.2km</strong>
+            </div>
+          </section>
+
+          <section class="score-panel compact child-only">
+            <div class="score-ring" aria-label="안심 점수 82점">
+              <strong id="safetyScore">82</strong>
+              <span>점</span>
+            </div>
+            <div class="score-copy">
+              <p>오늘 18.4km 운행</p>
+              <h2>주의 운전 2건 감지</h2>
+              <span>네이버지도 경로와 위험 구간 매칭</span>
+            </div>
+          </section>
+
+          <button class="cognition-card child-only" data-action="cognition-report">
+            <span>무료 인지도 점수</span>
+            <strong>74점</strong>
+            <p>자세한 월별 인지도 리포트는 구독 시 제공됩니다.</p>
+          </button>
+
+          <section class="locked-preview child-only child-free-only" data-action="cognition-report">
+            <div class="lock-icon">잠금</div>
+            <div>
+              <span>구독 시 해금</span>
+              <h2>3개월 인지도 변화 리포트</h2>
+              <p>반응 지연, 반복 경로 이탈, 급조작 패턴을 월별로 비교합니다.</p>
+            </div>
+          </section>
+
+          <section class="premium-insight child-only child-paid-only">
+            <span>유료 리포트 활성화</span>
+            <h2>인지도 변화 안정권</h2>
+            <p>최근 3개월 경로 이탈은 1회, 반응 지연 의심 패턴은 전월 대비 18% 감소했습니다.</p>
+          </section>
+
+          <section class="quick-grid child-only">
+            <button class="metric-tile" data-action="open-alerts">
+              <span>급감속</span>
+              <strong>1회</strong>
+            </button>
+            <button class="metric-tile" data-action="open-report">
+              <span>과속 구간</span>
+              <strong>2분</strong>
+            </button>
+            <button class="metric-tile">
+              <span>야간 운전</span>
+              <strong>0분</strong>
+            </button>
+          </section>
+
+          <section class="parent-guide-list parent-only">
+            <article>
+              <span>1</span>
+              <div>
+                <h3>차간 거리를 유지해주세요</h3>
+                <p>앞차와 거리가 가까워지고 있습니다.</p>
+              </div>
+            </article>
+            <article>
+              <span>2</span>
+              <div>
+                <h3>도착 후 휴식을 추천해요</h3>
+                <p>오늘 누적 운전 시간은 48분입니다.</p>
+              </div>
+            </article>
+          </section>
+
+          <button class="emergency-button parent-only" data-action="emergency">
+            자녀에게 긴급연락하기
+          </button>
+
+          <section class="section-block child-only">
+            <div class="section-heading">
+              <h2>가족 알림</h2>
+              <button class="text-button" data-action="open-alerts">전체</button>
+            </div>
+            <div class="alert-list">
+              <article class="alert-item warning">
+                <span class="alert-dot"></span>
+                <div>
+                  <h3>급감속 패턴이 감지됐어요</h3>
+                  <p>오후 4:12, 내부순환로 진입 전</p>
+                </div>
+              </article>
+              <article class="alert-item">
+                <span class="alert-dot"></span>
+                <div>
+                  <h3>목적지 근처에 도착했어요</h3>
+                  <p>오후 4:28, 상암동 주차장</p>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+
+        <section class="screen kakao-screen" data-screen="report" aria-label="카카오톡 대화">
+          <header class="topbar">
+            <div>
+              <p class="caption kakao-caption">가족 톡</p>
+              <h1 data-child="부모님께 보낼 말" data-parent="가족에게 공유">부모님께 보낼 말</h1>
+            </div>
+            <button class="small-button kakao-button" data-action="share">전송</button>
+          </header>
+
+          <section class="kakao-room">
+            <div class="kakao-room-head">
+              <span data-child="아버지" data-parent="자녀">아버지</span>
+              <strong>카카오톡</strong>
+            </div>
+            <div class="chat-row incoming">
+              <p data-child="오늘 운전 별일 없었지?" data-parent="아빠, 지금 목적지까지 잘 가고 있어요?">오늘 운전 별일 없었지?</p>
+            </div>
+            <div class="chat-row outgoing">
+              <p data-child="네이버지도 기준으로 상암동까지 잘 도착하셨어요." data-parent="응, 네이버지도 보고 천천히 가는 중이야.">네이버지도 기준으로 상암동까지 잘 도착하셨어요.</p>
+            </div>
+            <div class="chat-card parent-only">
+              <span>카카오톡 자동 공유</span>
+              <strong>차를 멈추면 자녀에게 톡을 보내주세요.</strong>
+              <p>운전 중에는 화면을 보거나 답장하지 않아도 됩니다. 안전한 곳에 정차한 뒤 확인하세요.</p>
+            </div>
+            <div class="ai-locked-card child-only child-free-only" data-action="subscribe">
+              <span>유료 기능</span>
+              <strong>AI 대화 제안은 플러스에서 열립니다</strong>
+              <p>운전 데이터를 바탕으로 부모님께 부담 없이 말할 수 있는 카카오톡 문안을 추천합니다.</p>
+              <button data-action="subscribe">AI 대화 제안 열기</button>
+            </div>
+            <div class="chat-card child-only child-paid-only">
+              <span>AI 대화 제안</span>
+              <strong>아빠, 이번 달은 훨씬 안정적으로 운전했어. 월드컵북로 진입 전만 조금 천천히 가면 더 좋겠어.</strong>
+              <p>칭찬 후 한 구간만 짚는 방식이라 방어감이 낮고 대화가 이어질 가능성이 높습니다.</p>
+            </div>
+          </section>
+
+          <section class="talk-options child-only child-paid-only">
+            <button data-action="soft-talk">
+              <span>부드럽게</span>
+              <strong>칭찬 후 확인</strong>
+            </button>
+            <button data-action="direct-talk">
+              <span>명확하게</span>
+              <strong>위험 구간 공유</strong>
+            </button>
+          </section>
+
+          <section class="parent-easy-actions parent-only">
+            <button data-action="share">현재 위치 가족에게 보내기</button>
+            <button data-action="notify">운전 안내 다시 듣기</button>
+          </section>
+
+          <section class="parent-talk-panel parent-only">
+            <article>
+              <span>카카오톡 가족 공유</span>
+              <h2>멈추면 보내주세요</h2>
+              <p>안전한 곳에 차를 세운 뒤 자녀에게 현재 위치를 보내면 됩니다.</p>
+            </article>
+            <article>
+              <span>큰 글씨 안내</span>
+              <h2>운전 중엔 보지 마세요</h2>
+              <p>필요한 내용은 정차 후 천천히 확인하셔도 됩니다.</p>
+            </article>
+          </section>
+
+          <section class="section-block child-only">
+            <div class="section-heading">
+              <h2>카카오톡 공유 카드</h2>
+            </div>
+            <div class="kakao-share-card">
+              <div>
+                <span>안심드라이브 리포트</span>
+                <h3>이번 주 안전 점수 86점</h3>
+                <p>급감속 4회 감소, 과속 시간 31% 감소</p>
+              </div>
+              <button data-action="share">톡 공유</button>
+            </div>
+          </section>
+
+          <section class="family-frame-settings child-only">
+            <div class="section-heading">
+              <h2>부모 화면 액자 설정</h2>
+            </div>
+            <div class="photo-setting-card">
+              <div class="family-photo-preview" id="childFamilyPhotoPreview">
+                <div class="photo-placeholder">
+                  <strong>가족 사진</strong>
+                  <span>사진을 올려주세요</span>
+                </div>
+              </div>
+              <label class="upload-button" for="familyPhotoInput">사진 업로드</label>
+              <input id="familyPhotoInput" type="file" accept="image/*" />
+            </div>
+            <label class="message-editor" for="familyMessageInput">
+              자녀의 한마디
+              <textarea id="familyMessageInput" rows="3">아빠, 오늘도 천천히 안전하게 다녀오세요. 도착하면 톡 주세요.</textarea>
+            </label>
+            <button class="save-message-button" data-action="save-family-frame">부모 화면에 반영</button>
+          </section>
+        </section>
+
+        <section class="screen" data-screen="alerts" aria-label="알림">
+          <header class="topbar">
+            <div>
+              <p class="caption naver-caption" data-child="위험 구간" data-parent="오늘 정보">네이버지도 위험 구간</p>
+              <h1 data-child="운행 이벤트" data-parent="운전 정보">운행 이벤트</h1>
+            </div>
+            <button class="small-button child-only" data-action="simulate">시뮬레이션</button>
+          </header>
+
+          <section class="parent-info-board parent-only">
+            <button class="habit-check-card" data-action="parent-score">
+              <span>운전습관 확인해보기</span>
+              <strong>82점</strong>
+              <p>오늘은 급가속 없이 안정적인 편입니다.</p>
+            </button>
+            <article class="parent-info-card weather-info">
+              <span>오늘 날씨</span>
+              <h2>맑음 18도</h2>
+              <p>도로가 건조하고 시야가 좋습니다. 선글라스를 준비하면 눈부심을 줄일 수 있어요.</p>
+            </article>
+            <article class="parent-info-card health-info">
+              <span>건강 안내</span>
+              <h2>물을 자주 마셔주세요</h2>
+              <p>장거리 운전 전에는 물을 조금씩 마시고, 비타민이 있는 과일을 챙기면 좋습니다.</p>
+            </article>
+            <article class="parent-info-card health-info">
+              <span>식사 안내</span>
+              <h2>편식하지 마세요</h2>
+              <p>운전 전에는 너무 기름진 음식보다 가벼운 식사가 집중에 도움이 됩니다.</p>
+            </article>
+          </section>
+
+          <section class="event-timeline child-only" id="eventTimeline">
+            <article class="event-card critical">
+              <span>오늘 16:12</span>
+              <h2 data-child="급감속" data-parent="전방 확인">급감속</h2>
+              <p data-child="네이버지도 교통 정체 구간 진입 전 2.8초 내 속도 변화가 감지됐습니다." data-parent="앞쪽 교통 흐름이 느려지고 있습니다. 차간 거리를 유지해주세요.">네이버지도 교통 정체 구간 진입 전 2.8초 내 속도 변화가 감지됐습니다.</p>
+              <button class="inline-button kakao-inline" data-action="call">카톡으로 확인</button>
+            </article>
+            <article class="event-card">
+              <span>오늘 15:44</span>
+              <h2 data-child="과속 주의" data-parent="속도 안내">과속 주의</h2>
+              <p data-child="네이버지도 제한속도 50km/h 구간에서 2분간 58km/h로 주행했습니다." data-parent="300m 앞 제한속도 50km/h 구간입니다. 천천히 진입해주세요.">네이버지도 제한속도 50km/h 구간에서 2분간 58km/h로 주행했습니다.</p>
+            </article>
+            <article class="event-card calm">
+              <span>어제 19:02</span>
+              <h2 data-child="안전 귀가" data-parent="도착 안내">안전 귀가</h2>
+              <p data-child="예상 목적지에 도착했고 야간 운전 위험은 감지되지 않았습니다." data-parent="목적지에 도착하면 카카오톡으로 가족에게 자동 공유됩니다.">예상 목적지에 도착했고 야간 운전 위험은 감지되지 않았습니다.</p>
+            </article>
+          </section>
+        </section>
+
+        <section class="screen" data-screen="partners" aria-label="제휴">
+          <header class="topbar">
+            <div>
+              <p class="caption">플러스</p>
+              <h1 data-child="혜택 연결" data-parent="운전 정보">혜택 연결</h1>
+            </div>
+            <button class="small-button" data-action="apply">신청</button>
+          </header>
+
+          <section class="subscription-card child-only child-free-only">
+            <span>안심드라이브 플러스</span>
+            <h2>구독 시 해금되는 기능</h2>
+            <p>월별 리포트와 AI 대화 제안으로 부모님의 운전 변화를 부담 없이 이야기할 수 있습니다.</p>
+            <button data-action="subscribe">월 4,900원 구독</button>
+          </section>
+
+          <section class="subscription-card active-plan child-only child-paid-only">
+            <span>안심드라이브 플러스 이용 중</span>
+            <h2>월별 리포트가 열렸어요</h2>
+            <p>부모님의 운전 습관과 인지도 변화를 매월 자동으로 정리합니다.</p>
+            <button data-action="subscribe">이번 달 리포트 보기</button>
+          </section>
+
+          <section class="unlock-list child-only child-free-only">
+            <article>
+              <span>01</span>
+              <div>
+                <h2>월별 부모 운전 리포트</h2>
+                <p>안전 점수, 급감속, 과속, 야간 운전, 위험 구간 변화를 한 장의 리포트로 제공합니다.</p>
+              </div>
+            </article>
+            <article>
+              <span>02</span>
+              <div>
+                <h2>인지도 변화 체크</h2>
+                <p>반복 경로 이탈, 반응 지연, 급조작 패턴을 장기 추세로 비교합니다.</p>
+              </div>
+            </article>
+            <article>
+              <span>03</span>
+              <div>
+                <h2>AI 대화 제안</h2>
+                <p>운전 리포트를 바탕으로 부모님께 보낼 카카오톡 문안을 자동으로 추천합니다.</p>
+              </div>
+            </article>
+          </section>
+
+          <section class="monthly-report child-only child-free-only">
+            <div class="section-heading">
+              <h2>월별 리포트 예시</h2>
+              <button class="text-button" data-action="subscribe">해금</button>
+            </div>
+            <div class="report-card locked">
+              <div class="report-head">
+                <span>2026년 5월</span>
+                <strong>부모 운전 리포트</strong>
+              </div>
+              <div class="report-metrics">
+                <div>
+                  <span>안전 점수</span>
+                  <strong>82</strong>
+                </div>
+                <div>
+                  <span>인지도</span>
+                  <strong>74</strong>
+                </div>
+                <div>
+                  <span>위험 변화</span>
+                  <strong>-31%</strong>
+                </div>
+              </div>
+              <p>구독 시 월별 추세, 위험 구간 지도, 가족 대화 가이드가 함께 제공됩니다.</p>
+            </div>
+          </section>
+
+          <section class="monthly-report child-only child-paid-only">
+            <div class="section-heading">
+              <h2>이번 달 리포트</h2>
+              <button class="text-button" data-action="share">공유</button>
+            </div>
+            <div class="report-card premium">
+              <div class="report-head">
+                <span>2026년 5월</span>
+                <strong>부모 운전 리포트</strong>
+              </div>
+              <div class="report-metrics">
+                <div>
+                  <span>안전 점수</span>
+                  <strong>82</strong>
+                </div>
+                <div>
+                  <span>인지도</span>
+                  <strong>74</strong>
+                </div>
+                <div>
+                  <span>위험 변화</span>
+                  <strong>-31%</strong>
+                </div>
+              </div>
+              <p>급감속은 줄었고 반복 경로 이탈은 1회만 감지됐습니다. 다음 달까지 야간 운전 시간을 함께 관찰하세요.</p>
+            </div>
+          </section>
+
+          <section class="full-report child-only child-paid-only">
+            <article class="report-section-card">
+              <span>운전 습관 분석</span>
+              <h2>급감속은 줄고, 과속 시간은 짧아졌어요</h2>
+              <div class="trend-list">
+                <div>
+                  <strong>-4회</strong>
+                  <p>급감속 전월 대비</p>
+                </div>
+                <div>
+                  <strong>-31%</strong>
+                  <p>과속 시간 변화</p>
+                </div>
+                <div>
+                  <strong>0분</strong>
+                  <p>야간 운전</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="report-section-card">
+              <span>인지도 체크</span>
+              <h2>반복 경로 이탈은 1회만 감지됐습니다</h2>
+              <div class="cognition-timeline">
+                <div><span>3월</span><strong>71</strong></div>
+                <div><span>4월</span><strong>72</strong></div>
+                <div><span>5월</span><strong>74</strong></div>
+              </div>
+              <p>급조작 후 회복 시간은 안정권이며, 낯선 교차로에서만 주의 패턴이 나타났습니다. 현재는 관찰 단계입니다.</p>
+              <div class="cognition-detail-grid">
+                <div><span>경로 이탈</span><strong>1회</strong></div>
+                <div><span>반응 지연</span><strong>-18%</strong></div>
+                <div><span>반복 실수</span><strong>낮음</strong></div>
+              </div>
+            </article>
+
+            <article class="report-section-card license-card">
+              <span>운전면허 반납 타이밍</span>
+              <h2>아직은 반납 권고 단계가 아닙니다</h2>
+              <p>인지도 점수가 3개월 연속 65점 이하이거나, 경로 이탈과 급조작이 함께 늘어나면 가족 상담과 병원 검사를 권장합니다.</p>
+              <div class="license-scale">
+                <span>현재</span>
+                <strong>관찰</strong>
+                <span>상담 필요</span>
+              </div>
+            </article>
+
+            <article class="report-section-card">
+              <span>네이버지도 위험 구간</span>
+              <h2>상암동 월드컵북로 진입 전 정체 구간</h2>
+              <p>이번 달 위험 이벤트의 60%가 동일 구간에서 발생했습니다. 다음 운행 전 우회 경로 안내를 추천합니다.</p>
+            </article>
+
+            <article class="report-section-card kakao-guide">
+              <span>카카오톡 대화 가이드</span>
+              <h2>“이번 달은 훨씬 안정적으로 운전했어”</h2>
+              <p>지적보다 칭찬으로 시작하고, 월드컵북로 구간만 천천히 가자고 제안하는 흐름이 좋습니다.</p>
+              <button data-action="share">대화 가이드 공유</button>
+            </article>
+          </section>
+
+          <section class="benefit-card primary-benefit">
+            <span data-child="예상 보험 할인" data-parent="오늘 운전 환경">예상 보험 할인</span>
+            <strong data-child="월 8,400원" data-parent="맑음 · 도로 원활">월 8,400원</strong>
+            <p data-child="최근 30일 안전 점수 80점 이상 기준으로 UBI 할인 대상입니다." data-parent="날씨와 도로 상황이 안정적입니다. 목적지까지 12분 남았습니다.">최근 30일 안전 점수 80점 이상 기준으로 UBI 할인 대상입니다.</p>
+          </section>
+
+          <section class="parent-simple-info parent-only">
+            <article>
+              <span>안전 운전 점수</span>
+              <strong>82점</strong>
+              <p>급가속과 급감속 없이 안정적으로 운전하고 계세요.</p>
+            </article>
+            <article>
+              <span>운전 환경</span>
+              <strong>맑음 · 도로 원활</strong>
+              <p>목적지까지 약 12분 남았습니다.</p>
+            </article>
+          </section>
+
+          <section class="partner-list child-only">
+            <article class="partner-row">
+              <div>
+                <h2>보험사 UBI 리포트</h2>
+                <p>안전 점수와 위험 운전 데이터를 보험 할인 리포트로 연결</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" checked />
+                <span></span>
+              </label>
+            </article>
+            <article class="partner-row">
+              <div>
+                <h2>지자체 안전 바우처</h2>
+                <p>면허반납 상담, 이동지원, 고령 운전자 위험도 분석 연계</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" />
+                <span></span>
+              </label>
+            </article>
+          </section>
+
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="하단 내비게이션">
+        <button class="nav-item active" data-target="home">
+          <span class="nav-icon" aria-hidden="true">N</span>
+          <span data-child="지도" data-parent="홈">지도</span>
+        </button>
+        <button class="nav-item" data-target="report">
+          <span class="nav-icon" aria-hidden="true">T</span>
+          톡
+        </button>
+        <button class="nav-item" data-target="alerts">
+          <span class="nav-icon" aria-hidden="true">!</span>
+          <span data-child="알림" data-parent="정보">알림</span>
+        </button>
+        <button class="nav-item child-only" data-target="partners">
+          <span class="nav-icon" aria-hidden="true">◇</span>
+          혜택
+        </button>
+      </nav>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js" defer></script>
+  </body>
+</html>

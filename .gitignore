@@ -1,0 +1,5 @@
+.DS_Store
+.swift-cache/
+tmp_assets/
+outputs/
+scripts/
