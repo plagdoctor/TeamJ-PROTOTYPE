@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# 발표 데모 사이트입니다. 검색 인덱싱이 필요 없으면 위 Allow 줄을 Disallow로 바꾸세요.

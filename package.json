@@ -1,0 +1,17 @@
+{
+  "name": "teamj-ansim-drive-prototype",
+  "private": true,
+  "version": "2.0.0",
+  "description": "안심드라이브 — Team-J MVP 프로토타입 (정적 사이트)",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "node ./build.mjs",
+    "start": "python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

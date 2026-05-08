@@ -4,3 +4,13 @@ tmp_assets/
 outputs/
 scripts/
 .gstack/
+
+# Build / 의존성
+node_modules/
+dist/
+.vercel/
+
+# 환경변수
+.env
+.env.local
+.env.*.local

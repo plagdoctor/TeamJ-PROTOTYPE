@@ -1,0 +1,17 @@
+{
+  "name": "안심드라이브 — 가족 안심 운전 모니터링",
+  "short_name": "안심드라이브",
+  "description": "자녀가 결제하고 부모는 아무것도 안 해도 되는, AI 기반 가족 안심 운전 모니터링 서비스 데모. Team-J MVP.",
+  "lang": "ko",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#050816",
+  "theme_color": "#5eead4",
+  "categories": ["productivity", "lifestyle", "health"],
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.svg", "sizes": "180x180", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
