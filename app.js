@@ -60,11 +60,14 @@
 
   /* ---------------- 공통 유틸 ---------------- */
   let toastTimer;
-  function showToast(message, duration = 2400) {
+  function showToast(message, duration) {
     clearTimeout(toastTimer);
+    const isDemo = state.autoPlayRunning;
+    const dur = duration ?? (isDemo ? 4800 : 2600);
     toast.textContent = message;
+    toast.classList.toggle("demo-mode", isDemo);
     toast.classList.add("show");
-    toastTimer = setTimeout(() => toast.classList.remove("show"), duration);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), dur);
   }
 
   function formatNumber(value, format) {

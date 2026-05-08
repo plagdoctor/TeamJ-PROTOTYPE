@@ -1699,26 +1699,78 @@ img {
 /* ---- 13. 토스트 ---- */
 .toast {
   position: fixed;
-  bottom: 32px;
+  bottom: 110px;
   left: 50%;
-  transform: translate(-50%, 20px);
-  padding: 12px 20px;
+  transform: translate(-50%, 24px);
+  padding: 16px 28px;
   border-radius: var(--radius-pill);
-  background: rgba(20, 25, 45, 0.95);
-  backdrop-filter: blur(24px);
-  border: 1px solid var(--border-glass-strong);
-  font-size: 13px;
+  background: rgba(8, 12, 28, 0.96);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
   color: var(--text-primary);
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s var(--ease-spring);
+  transition: all 0.4s var(--ease-spring);
   z-index: 200;
-  box-shadow: var(--shadow-md);
+  max-width: min(88vw, 680px);
+  text-align: center;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 12px 36px rgba(0, 0, 0, 0.55);
 }
 
 .toast.show {
   opacity: 1;
   transform: translate(-50%, 0);
+}
+
+/* 90초 자동 데모용 — 발표 캡션 모드: 더 크고, 더 강한 글로우 */
+.toast.demo-mode {
+  bottom: 130px;
+  padding: 22px 40px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  border: 1.5px solid rgba(94, 234, 212, 0.45);
+  background: rgba(5, 8, 22, 0.97);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.14) inset,
+    0 0 0 1px rgba(94, 234, 212, 0.15),
+    0 16px 48px rgba(0, 0, 0, 0.65),
+    0 0 80px rgba(94, 234, 212, 0.3);
+  max-width: min(92vw, 880px);
+}
+
+.toast.demo-mode::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-mint);
+  margin-right: 14px;
+  vertical-align: 3px;
+  box-shadow: 0 0 12px var(--accent-mint);
+  animation: pulse-dot 1.4s var(--ease-smooth) infinite;
+}
+
+@media (max-width: 768px) {
+  .toast {
+    font-size: 14px;
+    padding: 14px 22px;
+    bottom: 90px;
+    max-width: 92vw;
+  }
+  .toast.demo-mode {
+    font-size: 17px;
+    padding: 18px 26px;
+    bottom: 100px;
+  }
 }
 
 /* ---- 14. 결정 카드 (면허 반납 상담) ---- */
