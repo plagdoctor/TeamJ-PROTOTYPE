@@ -2487,3 +2487,274 @@ img {
 .parent-family-photo.has-photo::before {
   display: none;
 }
+
+/* ================================================================
+   32. Light Mode (Hybrid) — 페이지는 light, 폰 안은 dark 유지
+   ================================================================
+   .phone-screen 안의 모든 요소는 자체 hardcoded dark gradient를
+   갖고 있어 자동으로 dark로 유지됨. 여기서는 페이지-레벨 컴포넌트만
+   명시적으로 light로 override.
+   ================================================================ */
+
+body.light-mode {
+  --bg-deepest: #fbfaf6;
+  --bg-deep: #f5f3ec;
+  --bg-mid: #efece2;
+  --surface-glass: rgba(15, 23, 42, 0.04);
+  --surface-glass-strong: rgba(15, 23, 42, 0.07);
+  --surface-glass-faint: rgba(15, 23, 42, 0.02);
+  --border-glass: rgba(15, 23, 42, 0.1);
+  --border-glass-strong: rgba(15, 23, 42, 0.18);
+  --text-primary: #0f172a;
+  --text-secondary: #1e293b;
+  --text-tertiary: #475569;
+  --text-quaternary: #64748b;
+
+  background: linear-gradient(180deg, #fdfcf7 0%, #f5f3ec 100%);
+}
+
+body.light-mode .aurora {
+  filter: blur(80px) saturate(85%);
+  opacity: 0.55;
+}
+body.light-mode .aurora-orb.mint {
+  background: radial-gradient(circle, #14b8a6 0%, transparent 60%);
+  opacity: 0.18;
+}
+body.light-mode .aurora-orb.coral {
+  background: radial-gradient(circle, #fb7185 0%, transparent 60%);
+  opacity: 0.14;
+}
+body.light-mode .aurora-orb.purple {
+  background: radial-gradient(circle, #8b5cf6 0%, transparent 60%);
+  opacity: 0.16;
+}
+body.light-mode .aurora-orb.amber {
+  background: radial-gradient(circle, #f59e0b 0%, transparent 60%);
+  opacity: 0.1;
+}
+body.light-mode .aurora::after {
+  opacity: 0.025;
+  mix-blend-mode: multiply;
+}
+
+body.light-mode .top-bar {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+body.light-mode .brand-mark::after {
+  opacity: 0.18;
+}
+
+body.light-mode .biz-dashboard {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.05);
+}
+body.light-mode .biz-dashboard::before {
+  background: linear-gradient(90deg, transparent, rgba(20, 184, 166, 0.04), transparent);
+}
+
+body.light-mode .biz-card {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 4px 16px rgba(15, 23, 42, 0.04);
+}
+body.light-mode .biz-card:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+body.light-mode .biz-card.featured {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(56, 189, 248, 0.06) 100%);
+  border-color: rgba(20, 184, 166, 0.35);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 0 0 1px rgba(20, 184, 166, 0.1),
+    0 8px 24px rgba(15, 23, 42, 0.06);
+}
+body.light-mode .biz-card.featured .biz-card-value {
+  background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body.light-mode .biz-card-delta.up {
+  color: #047857;
+}
+body.light-mode .donut-svg circle:first-child {
+  stroke: rgba(15, 23, 42, 0.06);
+}
+
+body.light-mode .demo-stage {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.05);
+}
+body.light-mode .demo-stage::before {
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(15, 23, 42, 0.1) 30%,
+    rgba(15, 23, 42, 0.1) 70%,
+    transparent 100%);
+}
+
+body.light-mode .persona-tag {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(15, 23, 42, 0.1);
+}
+body.light-mode .persona-tag.payer {
+  color: #0d9488;
+  background: rgba(20, 184, 166, 0.1);
+  border-color: rgba(20, 184, 166, 0.3);
+}
+body.light-mode .persona-tag.user {
+  color: #c2410c;
+  background: rgba(251, 113, 133, 0.1);
+  border-color: rgba(251, 113, 133, 0.3);
+}
+
+body.light-mode .vs-mark {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: var(--text-quaternary);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 4px 16px rgba(15, 23, 42, 0.05);
+}
+body.light-mode .vs-mark::before {
+  background: linear-gradient(135deg,
+    rgba(20, 184, 166, 0.05) 0%,
+    transparent 50%,
+    rgba(251, 113, 133, 0.05) 100%);
+}
+
+body.light-mode .demo-controls {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+body.light-mode .ctrl-btn {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: var(--text-primary);
+}
+body.light-mode .ctrl-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(15, 23, 42, 0.2);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+body.light-mode .ctrl-btn.primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0284c7 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.35);
+}
+body.light-mode .ctrl-btn.danger {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: #b91c1c;
+}
+body.light-mode .ctrl-btn.danger:hover {
+  background: rgba(248, 113, 113, 0.18);
+}
+body.light-mode .ctrl-progress-track {
+  background: rgba(15, 23, 42, 0.08);
+}
+body.light-mode .ctrl-progress-fill {
+  background: linear-gradient(90deg, #14b8a6 0%, #0284c7 100%);
+  box-shadow: 0 0 12px rgba(20, 184, 166, 0.4);
+}
+body.light-mode .ctrl-divider {
+  background: rgba(15, 23, 42, 0.1);
+}
+
+body.light-mode .biz-footnote {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(20, 184, 166, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 50%),
+    rgba(255, 255, 255, 0.55);
+  border-color: rgba(15, 23, 42, 0.08);
+}
+body.light-mode .biz-footnote-item span {
+  color: #0d9488;
+}
+body.light-mode .biz-footnote-item:nth-child(2) span {
+  color: #6d28d9;
+}
+body.light-mode .biz-footnote-item:nth-child(3) span {
+  color: #c2410c;
+}
+
+body.light-mode .toast {
+  background: rgba(15, 23, 42, 0.96);
+  border-color: rgba(15, 23, 42, 0.4);
+  color: #f8fafc;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.25);
+}
+body.light-mode .toast.demo-mode {
+  background: rgba(15, 23, 42, 0.98);
+  border-color: rgba(20, 184, 166, 0.5);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.1) inset,
+    0 16px 48px rgba(15, 23, 42, 0.3),
+    0 0 80px rgba(20, 184, 166, 0.25);
+}
+
+body.light-mode .kakao-modal {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+/* ================================================================
+   33. Theme Toggle Link (탑바 안)
+   ================================================================ */
+
+.theme-toggle-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--surface-glass);
+  border: 1px solid var(--border-glass);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.25s var(--ease-snap);
+}
+.theme-toggle-link:hover {
+  background: var(--surface-glass-strong);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+.theme-toggle-link svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+body.light-mode .theme-toggle-link {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(15, 23, 42, 0.12);
+}
+body.light-mode .theme-toggle-link:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(15, 23, 42, 0.2);
+  color: var(--text-primary);
+}

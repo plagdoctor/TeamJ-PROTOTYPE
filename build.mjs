@@ -33,6 +33,7 @@ await build({
 // 3) 정적 자산 복사
 const staticFiles = [
   "index.html",
+  "light-theme.html",
   "favicon.svg",
   "apple-touch-icon.svg",
   "manifest.webmanifest",
