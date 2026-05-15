@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <title>안심드라이브 — 라이브 체험</title>
+    <meta
+      name="description"
+      content="폰을 들고 움직여보세요. 부모님이 운전 중에 일어나는 일을 직접 체험합니다."
+    />
+    <meta name="theme-color" content="#050816" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=Newsreader:opsz,wght@6..72,200;6..72,300;6..72,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="live-body">
+    <!-- Aurora 배경 -->
+    <div class="aurora" aria-hidden="true">
+      <div class="aurora-orb mint"></div>
+      <div class="aurora-orb coral"></div>
+      <div class="aurora-orb purple"></div>
+    </div>
+
+    <!-- SVG icon sprite (subset) -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <symbol id="i-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
+        <symbol id="i-rotate" viewBox="0 0 24 24">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+        </symbol>
+        <symbol id="i-maximize" viewBox="0 0 24 24">
+          <path d="M3 3h6M3 3v6M21 3h-6M21 3v6M3 21h6M3 21v-6M21 21h-6M21 21v-6"/>
+        </symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+      </defs>
+    </svg>
+
+    <main class="live-shell">
+      <!-- ===== START GATE (권한 + 안내) ===== -->
+      <div class="live-start-gate" id="startGate">
+        <div class="live-start-card">
+          <div class="live-start-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#i-shield"/></svg>
+          </div>
+          <h1 class="live-start-title">안심드라이브 라이브 체험</h1>
+          <p class="live-start-sub">
+            지금부터 당신은 <strong>부모님 입장</strong>이 됩니다.<br/>
+            아무것도 하지 않아도 화면 뒤에서 자동으로 데이터가 쌓입니다.
+          </p>
+
+          <div class="live-howto">
+            <div class="live-howto-row">
+              <span class="live-howto-icon">📱</span>
+              <div>폰을 손에 들고 가만히 있으면 <strong>안전 점수가 올라갑니다</strong></div>
+            </div>
+            <div class="live-howto-row">
+              <span class="live-howto-icon">🚶</span>
+              <div>천천히 움직이면 <strong>운전 시작이 자동 감지</strong>됩니다</div>
+            </div>
+            <div class="live-howto-row">
+              <span class="live-howto-icon">⚠️</span>
+              <div>흔들기 / 갑자기 멈추기 / 점프 = <strong>위험 운전 이벤트</strong></div>
+            </div>
+          </div>
+
+          <button class="live-start-btn" id="startBtn" type="button">
+            <svg class="icon icon-md" aria-hidden="true"><use href="#i-play"/></svg>
+            데모 시작 — 센서 권한 허용
+          </button>
+          <button class="live-start-fallback" id="fallbackBtn" type="button">
+            센서 안 쓰고 자동 시뮬로 보기
+          </button>
+
+          <p class="live-start-note">
+            iPhone은 첫 시작 시 시스템 권한 모달이 뜹니다 · 데이터는 폰 안에서만 처리됩니다
+          </p>
+        </div>
+      </div>
+
+      <!-- ===== IDLE 화면 (부모 폰 락스크린 톤) ===== -->
+      <section class="live-idle" id="idleScreen">
+        <div class="live-clock" id="liveClock">21:43</div>
+        <div class="live-date" id="liveDate">5월 15일 (목)</div>
+        <div class="live-weather">
+          <svg class="icon" aria-hidden="true" style="color: var(--accent-amber)"><use href="#i-sun"/></svg>
+          <span>맑음 · 18°C</span>
+        </div>
+
+        <div class="live-family-frame">
+          <div class="live-family-photo" aria-label="가족 사진"></div>
+          <div class="live-family-message">
+            <small>딸 미영의 한마디</small>
+            <p>아빠, 오늘도 천천히 안전하게 다녀오세요. 도착하면 톡 주세요.</p>
+          </div>
+        </div>
+
+        <div class="live-running">
+          <span class="live-running-pulse"></span>
+          <span>안심드라이브 <strong>백그라운드 실행 중</strong> · 부모님은 아무것도 하실 필요 없습니다</span>
+        </div>
+
+        <!-- 디버그 / 시연 인디케이터 (작은 박스) -->
+        <div class="live-debug-card" aria-label="실시간 안전 점수">
+          <div class="live-debug-row">
+            <span class="live-debug-label">안전 점수</span>
+            <strong class="live-debug-score good" id="debugScore">85</strong>
+          </div>
+          <div class="live-debug-row">
+            <span class="live-debug-label">감지된 이벤트</span>
+            <strong class="live-debug-events" id="debugEvents">0</strong>
+          </div>
+          <div class="live-debug-status" id="debugStatus">정차 · 백그라운드 모니터링</div>
+        </div>
+      </section>
+
+      <!-- ===== 운전 중 오버레이 ===== -->
+      <section class="live-driving" id="drivingScreen">
+        <div class="live-driving-label">▶ 운전 중 · 자동 분석</div>
+        <div class="live-driving-speed-num" id="drivingSpeed">44</div>
+        <div class="live-driving-speed-unit">km/h · 제한속도 50</div>
+
+        <div class="live-driving-map">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M 0 60 H 100" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+            <path d="M 0 30 H 100" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+            <path d="M 25 0 V 100" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+            <path d="M 70 0 V 100" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+            <path
+              d="M 10 90 L 25 90 L 25 50 L 55 50 L 55 18 L 80 18"
+              stroke="url(#liveRouteGrad)"
+              stroke-width="2"
+              fill="none"
+              stroke-dasharray="3 3"
+              stroke-linecap="round"
+            />
+            <defs>
+              <linearGradient id="liveRouteGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#5eead4"/>
+                <stop offset="100%" stop-color="#38bdf8"/>
+              </linearGradient>
+            </defs>
+            <circle cx="10" cy="90" r="2" fill="#94a3b8"/>
+            <circle cx="80" cy="18" r="2" fill="#fbbf24"/>
+          </svg>
+          <div class="live-car-marker" id="liveCarMarker">🚗</div>
+        </div>
+
+        <div class="live-driving-info">
+          <div>
+            <div class="live-driving-info-label">활동량</div>
+            <strong id="drivingActivity">0.0</strong>
+          </div>
+          <div>
+            <div class="live-driving-info-label">이상 이벤트</div>
+            <strong id="drivingEventCount">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 이벤트 토스트 ===== -->
+      <div class="live-event-toast" id="eventToast" role="alert" aria-live="polite"></div>
+
+      <!-- ===== 컨트롤 (작은 floating 버튼) ===== -->
+      <div class="live-controls">
+        <button class="live-ctrl-btn" id="fullscreenBtn" type="button" aria-label="풀스크린 토글">
+          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-maximize"/></svg>
+        </button>
+        <button class="live-ctrl-btn" id="resetBtn" type="button" aria-label="데모 리셋">
+          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-rotate"/></svg>
+        </button>
+      </div>
+
+      <a href="/" class="live-back-link">← 메인 데모로</a>
+    </main>
+
+    <script src="./live.js"></script>
+  </body>
+</html>

@@ -549,6 +549,7 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeKakaoModal();
+        closeQrModal();
       }
       if (e.key === " " && e.target === document.body) {
         e.preventDefault();
@@ -564,6 +565,38 @@
       }
     });
   }
+
+  /* ---------------- QR 모달 ---------------- */
+  const qrTrigger = $("#qrTrigger");
+  const qrModal = $("#qrModal");
+  const qrCanvas = $("#qrCanvas");
+  const qrUrl = $("#qrUrl");
+  const qrClose = $("#qrClose");
+
+  function openQrModal() {
+    if (!qrModal) return;
+    const url = window.location.origin + "/live";
+    if (qrCanvas) {
+      const apiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data=" + encodeURIComponent(url);
+      qrCanvas.innerHTML =
+        '<img src="' + apiUrl + '" alt="QR Code: ' + url + '" ' +
+        'style="width:100%;height:100%;display:block" loading="lazy"/>';
+    }
+    if (qrUrl) qrUrl.textContent = url;
+    qrModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeQrModal() {
+    if (qrModal) qrModal.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+
+  if (qrTrigger) qrTrigger.addEventListener("click", openQrModal);
+  if (qrClose) qrClose.addEventListener("click", closeQrModal);
+  if (qrModal) qrModal.addEventListener("click", function (e) {
+    if (e.target === qrModal) closeQrModal();
+  });
 
   /* ---------------- 초기화 ---------------- */
   function init() {

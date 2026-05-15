@@ -188,6 +188,19 @@
         <div class="top-bar-right">
           <span class="status-dot" aria-hidden="true"></span>
           <span>실시간 데모 시연 중</span>
+          <button class="qr-trigger" id="qrTrigger" type="button" aria-label="현장 라이브 체험 QR 코드 보기">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+              <line x1="14" y1="14" x2="14" y2="18"/>
+              <line x1="14" y1="20" x2="14" y2="21"/>
+              <line x1="18" y1="14" x2="21" y2="14"/>
+              <line x1="20" y1="18" x2="21" y2="18"/>
+              <line x1="18" y1="21" x2="21" y2="21"/>
+            </svg>
+            라이브 QR
+          </button>
           <a href="/light-theme" class="theme-toggle-link" aria-label="라이트 테마로 보기">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="12" cy="12" r="4"/>
@@ -687,6 +700,20 @@
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- ===== QR 코드 모달 (현장 라이브 체험 안내) ===== -->
+    <div class="qr-modal" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
+      <div class="qr-modal-shell">
+        <div class="qr-modal-title" id="qrTitle">📱 현장 라이브 체험</div>
+        <div class="qr-modal-sub">
+          QR을 스캔하면 본인 폰에서 <strong>부모님 입장 Zero-Touch 체험</strong>이 시작됩니다.<br/>
+          폰을 흔들거나 갑자기 멈추면 화면이 반응합니다.
+        </div>
+        <div class="qr-modal-canvas" id="qrCanvas"></div>
+        <div class="qr-modal-url" id="qrUrl">/live</div>
+        <button class="qr-modal-close" id="qrClose" type="button">닫기 (Esc)</button>
+      </div>
+    </div>
 
     <script src="./app.js"></script>
   </body>

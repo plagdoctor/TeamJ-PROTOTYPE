@@ -21,6 +21,17 @@ await build({
   sourcemap: false,
 });
 
+// 1b) live.js minify
+await build({
+  entryPoints: ["live.js"],
+  outfile: "dist/live.js",
+  bundle: false,
+  minify: true,
+  target: ["es2020"],
+  legalComments: "none",
+  sourcemap: false,
+});
+
 // 2) CSS minify
 await build({
   entryPoints: ["styles.css"],
@@ -34,6 +45,7 @@ await build({
 const staticFiles = [
   "index.html",
   "light-theme.html",
+  "live.html",
   "favicon.svg",
   "apple-touch-icon.svg",
   "manifest.webmanifest",
