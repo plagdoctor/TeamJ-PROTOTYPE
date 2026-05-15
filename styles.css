@@ -3463,3 +3463,89 @@ body.light-mode .qr-trigger {
 .qr-modal-close:hover {
   background: rgba(255, 255, 255, 0.12);
 }
+
+/* ================================================================
+   36. 활동량 라이브 게이지 (디버그 카드 안)
+   ================================================================ */
+
+.live-activity-row {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.live-activity-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.live-activity-num {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-mint);
+  transition: color 0.2s;
+}
+
+.live-activity-track {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.live-activity-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #34d399 0%, #5eead4 100%);
+  transition: width 0.25s var(--ease-snap), background 0.3s;
+  box-shadow: 0 0 12px rgba(94, 234, 212, 0.5);
+  min-width: 6px;
+}
+
+.live-activity-bar.warn {
+  background: linear-gradient(90deg, #5eead4 0%, #fbbf24 100%);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
+}
+
+.live-activity-bar.danger {
+  background: linear-gradient(90deg, #fbbf24 0%, #f87171 100%);
+  box-shadow: 0 0 16px rgba(248, 113, 113, 0.6);
+}
+
+.live-activity-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 9px;
+  color: var(--text-quaternary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* driving 화면 활동량 카드 — 게이지 바 인라인 */
+.live-driving-activity {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.live-driving-activity strong {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--accent-mint);
+  font-variant-numeric: tabular-nums;
+}
+
+.live-driving-activity .live-activity-track {
+  height: 6px;
+  margin-top: 2px;
+}

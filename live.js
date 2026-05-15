@@ -18,8 +18,11 @@
   const debugScore = $("#debugScore");
   const debugEvents = $("#debugEvents");
   const debugStatus = $("#debugStatus");
+  const debugActivityBar = $("#debugActivityBar");
+  const debugActivityNum = $("#debugActivityNum");
   const drivingSpeed = $("#drivingSpeed");
   const drivingActivity = $("#drivingActivity");
+  const drivingActivityBar = $("#drivingActivityBar");
   const drivingEventCount = $("#drivingEventCount");
   const eventToast = $("#eventToast");
   const carMarker = $("#liveCarMarker");
@@ -132,18 +135,32 @@
     bumpDrivingSpeed(type);
   }
 
+  // 위험 이벤트 발생 시 일시적 속도 spike (현재 속도에 ± 적용, auto reset 없음)
   function bumpDrivingSpeed(type) {
     if (!drivingSpeed) return;
-    const speeds = { brake: 22, swerve: 58, accel: 78 };
-    const s = speeds[type] || 50;
-    drivingSpeed.textContent = String(s);
+    const spikes = { brake: -22, swerve: 8, accel: 28 };
+    const cur = parseInt(drivingSpeed.textContent || "30", 10) || 30;
+    const next = clamp(cur + (spikes[type] || 0), 0, 130);
+    setSpeedDisplay(next);
+    state.speedSpikeUntil = nowMs() + 1500;  // 1.5초 동안 다음 활동량 업데이트 안 덮어쓰기
+  }
+
+  // 활동량 → 속도 매핑 (km/h)
+  function activityToSpeed(avg) {
+    // 0 → 0km/h, 0.5 → 8, 2 → 28, 5 → 52, 10 → 80, 15+ → 100+
+    if (avg < 0.4) return 0;
+    if (avg < 1.5) return Math.round(5 + avg * 8);    // 정차~저속 (5~17)
+    if (avg < 5)   return Math.round(20 + avg * 6);   // 안전 운전 (26~50)
+    if (avg < 12)  return Math.round(50 + avg * 2.5); // 약간 위험 (62~80)
+    return Math.min(120, Math.round(70 + avg * 2));   // 격렬 (80+)
+  }
+
+  function setSpeedDisplay(speed) {
+    if (!drivingSpeed) return;
+    drivingSpeed.textContent = String(speed);
     drivingSpeed.classList.remove("warn", "danger");
-    if (s > 70) drivingSpeed.classList.add("danger");
-    else if (s > 50) drivingSpeed.classList.add("warn");
-    setTimeout(() => {
-      drivingSpeed.textContent = "44";
-      drivingSpeed.classList.remove("warn", "danger");
-    }, 2500);
+    if (speed > 70) drivingSpeed.classList.add("danger");
+    else if (speed > 50) drivingSpeed.classList.add("warn");
   }
 
   /* ---------- 차량 마커 이동 ---------- */
@@ -167,45 +184,65 @@
   }
   setInterval(moveCarMarker, 600);
 
-  /* ---------- 주기적 점수 적립 ---------- */
+  /* ---------- 활동량 시각 게이지 (즉각 피드백) ---------- */
+  function updateActivityGauge(avgDelta) {
+    // bar: 0 → 0%, 15 → 100%
+    const pct = clamp((avgDelta / 15) * 100, 0, 100);
+    const widthStr = pct.toFixed(1) + "%";
+    [debugActivityBar, drivingActivityBar].forEach((bar) => {
+      if (!bar) return;
+      bar.style.width = widthStr;
+      bar.classList.remove("warn", "danger");
+      if (avgDelta >= 8) bar.classList.add("danger");
+      else if (avgDelta >= 3) bar.classList.add("warn");
+    });
+    if (debugActivityNum) debugActivityNum.textContent = avgDelta.toFixed(1);
+    if (drivingActivity) drivingActivity.textContent = avgDelta.toFixed(1);
+  }
+
+  /* ---------- 주기적 점수 적립 + 속도 라이브 업데이트 ---------- */
   function startScoreLoop() {
     if (state.scoreInterval) return;
     state.scoreInterval = setInterval(() => {
-      // 활동량 평균
       const sum = state.activityWindow.reduce((a, b) => a + b, 0);
       const avgDelta = state.activityWindow.length ? sum / state.activityWindow.length : 0;
 
+      // 1. 점수 + 상태 라벨
       let delta = 0;
-      if (avgDelta < 1.5) {
-        delta = +0.5;  // 정차/정지
-        setStatus(state.drivingMode ? "안전 운전 중" : "정차 · 백그라운드 모니터링");
-      } else if (avgDelta < 5) {
+      if (avgDelta < 0.8) {
+        delta = +0.5;  // 정차 (가만히)
+        setStatus(state.drivingMode ? "안전 운전 중 · 정차" : "정차 · 백그라운드 모니터링");
+      } else if (avgDelta < 3) {
         delta = +0.3;  // 안전 운전
-        setStatus("안전 운전 중");
+        setStatus("안전 운전 중 · 정상 패턴");
         enterDrivingMode();
-      } else if (avgDelta < 12) {
+      } else if (avgDelta < 8) {
         delta = -0.1; // 약간 위험
-        setStatus("주의 — 운전 패턴 변동");
+        setStatus("주의 · 운전 패턴 변동 감지");
         enterDrivingMode();
       } else {
-        delta = -0.2; // 격렬
-        setStatus("위험 — 격한 운전 감지");
+        delta = -0.3; // 격렬
+        setStatus("위험 · 격한 운전 패턴");
         enterDrivingMode();
       }
       setScore(state.score + delta);
 
-      // 활동 표시 업데이트
-      if (drivingActivity) {
-        drivingActivity.textContent = avgDelta.toFixed(1);
+      // 2. 활동량 게이지 업데이트 (시각 피드백)
+      updateActivityGauge(avgDelta);
+
+      // 3. 속도 라이브 업데이트 (위험 이벤트 spike 직후 1.5초는 건너뛰기)
+      if (state.drivingMode && nowMs() > (state.speedSpikeUntil || 0)) {
+        setSpeedDisplay(activityToSpeed(avgDelta));
       }
 
-      // 운전 모드인데 한참 정지 상태면 종료
-      if (state.drivingMode && avgDelta < 1.5) {
+      // 4. 운전 모드인데 한참 정지 상태면 종료
+      if (state.drivingMode && avgDelta < 0.8) {
         if (nowMs() - state.lastDrivingTransition > 8000) {
           exitDrivingMode();
+          setSpeedDisplay(0);
         }
       }
-    }, 1000);
+    }, 700);  // 1초 → 0.7초 (반응성 ↑)
   }
 
   /* ---------- DeviceMotion 핸들러 ---------- */
@@ -225,14 +262,14 @@
       state.activityWindow.shift();
     }
 
-    // 위험 이벤트 임계값
-    if (delta > 18) {
-      // 매우 큰 jerk = 급가속/큰 충격
+    // 위험 이벤트 임계값 — instantaneous jerk 기반
+    if (delta > 14) {
+      // 매우 큰 jerk = 급가속 또는 큰 충격
       fireRiskEvent("accel", "급가속 감지 · 점수 -5", -5, [40, 30, 80]);
-    } else if (delta > 10) {
+    } else if (delta > 7) {
       // 중간 jerk = 급제동 또는 차선 급변경
       const rot = e.rotationRate;
-      const isSwerve = rot && (Math.abs(rot.alpha) > 80 || Math.abs(rot.gamma) > 80);
+      const isSwerve = rot && (Math.abs(rot.alpha) > 60 || Math.abs(rot.gamma) > 60);
       if (isSwerve) {
         fireRiskEvent("swerve", "차선 급변경 감지 · 점수 -3", -3, [30, 30, 30]);
       } else {
@@ -274,27 +311,44 @@
     startScoreLoop();
     setStatus("자동 시뮬 모드 (" + reason + ")");
     showToast("자동 시뮬 모드로 진행합니다");
-    // 5~10초마다 가짜 이벤트 발생
-    state.fallbackInterval = setInterval(() => {
-      if (Math.random() > 0.5) {
-        const types = [
-          ["brake", "급제동 감지 · 점수 -4", -4, [60, 40]],
-          ["swerve", "차선 급변경 감지 · 점수 -3", -3, [30, 30, 30]],
-          ["accel", "급가속 감지 · 점수 -5", -5, [40, 30, 80]],
-        ];
-        const t = types[Math.floor(Math.random() * types.length)];
-        fireRiskEvent(t[0], t[1], t[2], t[3]);
-      } else {
-        // 활동량 인위적 증가 (운전 모드 트리거)
-        for (let i = 0; i < 8; i++) {
-          state.activityWindow.push(3 + Math.random() * 4);
-          if (state.activityWindow.length > state.activityWindowSize) {
-            state.activityWindow.shift();
-          }
-        }
-        enterDrivingMode();
+
+    // 자동 시뮬: 부드러운 활동량 변화 — 정차로 시작해서 천천히 변화
+    let baseActivity = 0.2;
+    let targetActivity = 0.2;
+    let phaseCounter = -25;  // 처음 5초간 정차 유지 (idle 화면 + 게이지 바 보여주기)
+
+    state.fallbackTickInterval = setInterval(() => {
+      // 200ms마다 활동량 sample 추가 (실제 motion 흉내)
+      // 부드럽게 baseline → target 사이 보간
+      baseActivity += (targetActivity - baseActivity) * 0.15;
+      const noise = (Math.random() - 0.5) * 0.8;
+      const sample = Math.max(0, baseActivity + noise);
+      state.activityWindow.push(sample);
+      if (state.activityWindow.length > state.activityWindowSize) {
+        state.activityWindow.shift();
       }
-    }, 6000 + Math.random() * 4000);
+
+      // 4초마다 phase 전환 (정차 → 주행 → 활발 → ...)
+      phaseCounter++;
+      if (phaseCounter >= 20) {
+        phaseCounter = 0;
+        const phases = [0.3, 1.5, 3, 5, 1.5, 0.3];
+        targetActivity = phases[Math.floor(Math.random() * phases.length)];
+        if (targetActivity > 1) enterDrivingMode();
+      }
+    }, 200);
+
+    // 8~14초마다 위험 이벤트 발생
+    state.fallbackInterval = setInterval(() => {
+      const types = [
+        ["brake", "급제동 감지 · 점수 -4", -4, [60, 40]],
+        ["swerve", "차선 급변경 감지 · 점수 -3", -3, [30, 30, 30]],
+        ["accel", "급가속 감지 · 점수 -5", -5, [40, 30, 80]],
+      ];
+      const t = types[Math.floor(Math.random() * types.length)];
+      fireRiskEvent(t[0], t[1], t[2], t[3]);
+    }, 9000 + Math.random() * 5000);
+
     tryWakeLock();
   }
 

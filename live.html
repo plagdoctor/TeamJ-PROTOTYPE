@@ -123,6 +123,24 @@
             <span class="live-debug-label">감지된 이벤트</span>
             <strong class="live-debug-events" id="debugEvents">0</strong>
           </div>
+
+          <!-- 활동량 라이브 게이지 — 폰을 흔들면 즉각 반응 -->
+          <div class="live-activity-row">
+            <div class="live-activity-head">
+              <span class="live-debug-label">활동량 (라이브)</span>
+              <strong class="live-activity-num" id="debugActivityNum">0.0</strong>
+            </div>
+            <div class="live-activity-track">
+              <div class="live-activity-bar" id="debugActivityBar" style="width: 0%"></div>
+            </div>
+            <div class="live-activity-scale">
+              <span>정차</span>
+              <span>천천히</span>
+              <span>활발</span>
+              <span>격렬</span>
+            </div>
+          </div>
+
           <div class="live-debug-status" id="debugStatus">정차 · 백그라운드 모니터링</div>
         </div>
       </section>
@@ -160,9 +178,12 @@
         </div>
 
         <div class="live-driving-info">
-          <div>
-            <div class="live-driving-info-label">활동량</div>
+          <div class="live-driving-activity">
+            <div class="live-driving-info-label">활동량 (라이브)</div>
             <strong id="drivingActivity">0.0</strong>
+            <div class="live-activity-track">
+              <div class="live-activity-bar" id="drivingActivityBar" style="width: 0%"></div>
+            </div>
           </div>
           <div>
             <div class="live-driving-info-label">이상 이벤트</div>
